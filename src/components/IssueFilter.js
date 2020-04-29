@@ -3,9 +3,11 @@ import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import URLSearchParams from 'url-search-params';
 
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { red } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/styles';
@@ -95,9 +97,11 @@ class IssueFilter extends React.Component {
         </Button>
       );
     return (
-      <Card>
-        <CardHeader className={classes.header} title="Filter" />
-        <CardContent>
+      <ExpansionPanel>
+        <ExpansionPanelSummary className={classes.header} expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}>
+          <Typography variant="h6">Filter</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails style={{ display: 'block' }}>
           <div id="filters" style={{ marginBottom: 20 }}>
             {'Status: '}
             <select value={status} onChange={this.onChangeStatus}>
@@ -120,8 +124,8 @@ class IssueFilter extends React.Component {
             Apply
           </Button>{' '}
           {resetButton}
-        </CardContent>
-      </Card>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     );
   }
 }

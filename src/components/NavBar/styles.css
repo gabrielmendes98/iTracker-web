@@ -1,0 +1,8 @@
+#app-bar a {
+  text-decoration: none;
+}
+
+#app-bar a.active {
+  color: orange;
+  font-weight: bold;
+}

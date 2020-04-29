@@ -6,9 +6,11 @@ import './styles.css';
 
 const App = () => (
   <div>
-    <div id="main-content">
+    <div id="main">
       <NavBar />
-      <Routes />
+      <div id="page-content">
+        <Routes />
+      </div>
     </div>
     <Footer />
   </div>

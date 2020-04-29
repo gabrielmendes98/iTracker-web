@@ -3,6 +3,20 @@ import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import URLSearchParams from 'url-search-params';
 
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+
+import { red } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/styles';
+
+const styles = (theme) => ({
+  header: {
+    backgroundColor: red[500],
+    color: '#fff',
+  },
+});
+
 class IssueFilter extends React.Component {
   constructor({ location: { search } }) {
     super();
@@ -67,28 +81,49 @@ class IssueFilter extends React.Component {
 
   render() {
     const { status, changed, effortMin, effortMax } = this.state;
-    return (
-      <div>
-        {'Status: '}
-        <select value={status} onChange={this.onChangeStatus}>
-          <option value="">(All)</option>
-          <option value="New">New</option>
-          <option value="Assigned">Assigned</option>
-          <option value="Fixed">Fixed</option>
-          <option value="Closed">Closed</option>
-        </select>{' '}
-        Effort between: <input size={5} value={effortMin} onChange={this.onChangeEffortMin} />
-        {' - '}
-        <input size={5} value={effortMax} onChange={this.onChangeEffortMax} />{' '}
-        <Button variant="contained" type="button" onClick={this.applyFilter}>
-          Apply
-        </Button>{' '}
-        <Button variant="outlined" type="button" onClick={this.showOriginalFilter} disabled={!changed}>
+    const { classes } = this.props;
+    let resetButton;
+    if (changed)
+      resetButton = (
+        <Button
+          style={{ borderColor: red[500], color: red[500] }}
+          variant="outlined"
+          type="button"
+          onClick={this.showOriginalFilter}
+        >
           Reset
         </Button>
-      </div>
+      );
+    return (
+      <Card>
+        <CardHeader className={classes.header} title="Filter" />
+        <CardContent>
+          <div id="filters" style={{ marginBottom: 20 }}>
+            {'Status: '}
+            <select value={status} onChange={this.onChangeStatus}>
+              <option value="">(All)</option>
+              <option value="New">New</option>
+              <option value="Assigned">Assigned</option>
+              <option value="Fixed">Fixed</option>
+              <option value="Closed">Closed</option>
+            </select>{' '}
+            Effort between: <input size={5} value={effortMin} onChange={this.onChangeEffortMin} />
+            {' - '}
+            <input size={5} value={effortMax} onChange={this.onChangeEffortMax} />
+          </div>
+          <Button
+            style={{ backgroundColor: red[500], color: '#fff' }}
+            variant="contained"
+            type="button"
+            onClick={this.applyFilter}
+          >
+            Apply
+          </Button>{' '}
+          {resetButton}
+        </CardContent>
+      </Card>
     );
   }
 }
 
-export default withRouter(IssueFilter);
+export default withRouter(withStyles(styles)(IssueFilter));

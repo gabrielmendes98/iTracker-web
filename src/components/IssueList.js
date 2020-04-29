@@ -114,11 +114,13 @@ class IssueList extends React.Component {
     return (
       <React.Fragment>
         <IssueFilter />
-        <hr />
-        <IssueTable issues={state.issues} closeIssue={this.closeIssue} deleteIssue={this.deleteIssue} />
-        <hr />
+        <IssueTable
+          issues={state.issues}
+          closeIssue={this.closeIssue}
+          deleteIssue={this.deleteIssue}
+          style={{ marginTop: 20, marginBottom: 20 }}
+        />
         <IssueAdd createIssue={createIssue} />
-        <hr />
         <Route path={`${match.path}/:id`} component={IssueDetail} />
       </React.Fragment>
     );

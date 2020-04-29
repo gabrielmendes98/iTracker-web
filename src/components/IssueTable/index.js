@@ -51,12 +51,12 @@ const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIs
   );
 });
 
-const IssueTable = ({ issues, closeIssue, deleteIssue }) => {
+const IssueTable = ({ issues, closeIssue, deleteIssue, style }) => {
   const issueRows = issues.map((issue, index) => (
     <IssueRow key={issue.id} issue={issue} closeIssue={closeIssue} deleteIssue={deleteIssue} index={index} />
   ));
   return (
-    <table className="bordered-table">
+    <table className="bordered-table" style={style}>
       <thead>
         <tr>
           <th>ID</th>

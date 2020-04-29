@@ -18,6 +18,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 
+import { withStyles } from '@material-ui/core/styles';
+const StyledTableCell = withStyles(() => ({
+  head: {
+    fontWeight: 'bold',
+  },
+}))(TableCell);
+
 const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIssue, index }) => {
   const { id, status, owner, effort, created, due, title } = issue;
   const selectLocation = { pathname: `/issues/${id}`, search };
@@ -69,17 +76,17 @@ const IssueTable = ({ issues, closeIssue, deleteIssue, style }) => {
   ));
   return (
     <TableContainer component={Paper} style={style}>
-      <Table size="small">
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell style={{ fontWeight: 'bold' }}>ID</TableCell>
-            <TableCell style={{ fontWeight: 'bold' }}>Status</TableCell>
-            <TableCell style={{ fontWeight: 'bold' }}>Owner</TableCell>
-            <TableCell style={{ fontWeight: 'bold' }}>Effort</TableCell>
-            <TableCell style={{ fontWeight: 'bold' }}>Created</TableCell>
-            <TableCell style={{ fontWeight: 'bold' }}>Due</TableCell>
-            <TableCell style={{ fontWeight: 'bold' }}>Title</TableCell>
-            <TableCell align="right"></TableCell>
+            <StyledTableCell>ID</StyledTableCell>
+            <StyledTableCell>Status</StyledTableCell>
+            <StyledTableCell>Owner</StyledTableCell>
+            <StyledTableCell>Effort</StyledTableCell>
+            <StyledTableCell>Created</StyledTableCell>
+            <StyledTableCell>Due</StyledTableCell>
+            <StyledTableCell>Title</StyledTableCell>
+            <StyledTableCell align="right"></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>{issueRows}</TableBody>

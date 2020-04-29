@@ -1,19 +1,8 @@
-.bordered-table th,
-td {
-  border: 1px solid silver;
-  padding: 4px;
-}
-
-.bordered-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.bordered-table a {
+table a {
   text-decoration: none;
   color: blue;
 }
 
-.bordered-table a.active {
+table a.active {
   color: red;
 }

@@ -27,7 +27,7 @@ const MenuGrow = () => {
 
   return (
     <div>
-      <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button color="inherit" onClick={handleClick}>
         <MoreVertIcon />
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>

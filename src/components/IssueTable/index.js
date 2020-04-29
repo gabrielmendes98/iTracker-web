@@ -9,23 +9,35 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { green, red } from '@material-ui/core/colors';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import EditIcon from '@material-ui/icons/Edit';
+
 const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIssue, index }) => {
   const { id, status, owner, effort, created, due, title } = issue;
   const selectLocation = { pathname: `/issues/${id}`, search };
   return (
-    <tr>
-      <td>{id}</td>
-      <td>{status}</td>
-      <td>{owner}</td>
-      <td>{effort}</td>
-      <td>{created.toDateString()}</td>
-      <td>{due ? due.toDateString() : ' '}</td>
-      <td>{title}</td>
-      <td>
-        <Link to={`/edit/${id}`}>Edit</Link>
-        {' | '}
+    <TableRow>
+      <TableCell>{id}</TableCell>
+      <TableCell>{status}</TableCell>
+      <TableCell>{owner}</TableCell>
+      <TableCell>{effort}</TableCell>
+      <TableCell>{created.toDateString()}</TableCell>
+      <TableCell>{due ? due.toDateString() : ' '}</TableCell>
+      <TableCell>{title}</TableCell>
+      <TableCell align="right">
         <NavLink to={selectLocation}>Select</NavLink>
         {' | '}
+        <Tooltip title="Edit issue">
+          <IconButton to={`/edit/${id}`} component={Link}>
+            <EditIcon style={{ color: '#000' }} />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Close issue">
           <IconButton
             type="button"
@@ -46,8 +58,8 @@ const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIs
             <DeleteIcon style={{ color: red[500] }} />
           </IconButton>
         </Tooltip>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 });
 
@@ -56,21 +68,23 @@ const IssueTable = ({ issues, closeIssue, deleteIssue, style }) => {
     <IssueRow key={issue.id} issue={issue} closeIssue={closeIssue} deleteIssue={deleteIssue} index={index} />
   ));
   return (
-    <table className="bordered-table" style={style}>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Status</th>
-          <th>Owner</th>
-          <th>Effort</th>
-          <th>Created</th>
-          <th>Due</th>
-          <th>Title</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>{issueRows}</tbody>
-    </table>
+    <TableContainer component={Paper} style={style}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell style={{ fontWeight: 'bold' }}>ID</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Status</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Owner</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Effort</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Created</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Due</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Title</TableCell>
+            <TableCell align="right"></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{issueRows}</TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import './styles.css';
 
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -25,11 +24,16 @@ const StyledTableCell = withStyles(() => ({
   },
 }))(TableCell);
 
-const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIssue, index }) => {
+const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIssue, index, history }) => {
   const { id, status, owner, effort, created, due, title } = issue;
   const selectLocation = { pathname: `/issues/${id}`, search };
+
   return (
-    <TableRow>
+    <TableRow
+      onClick={() => {
+        history.push(selectLocation);
+      }}
+    >
       <TableCell>{id}</TableCell>
       <TableCell>{status}</TableCell>
       <TableCell>{owner}</TableCell>
@@ -38,8 +42,6 @@ const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIs
       <TableCell>{due ? due.toDateString() : ' '}</TableCell>
       <TableCell>{title}</TableCell>
       <TableCell align="right">
-        <NavLink to={selectLocation}>Select</NavLink>
-        {' | '}
         <Tooltip title="Edit issue">
           <IconButton to={`/edit/${id}`} component={Link}>
             <EditIcon style={{ color: '#000' }} />

@@ -24,12 +24,22 @@ const StyledTableCell = withStyles(() => ({
   },
 }))(TableCell);
 
+const StyledTableRow = withStyles(() => ({
+  root: {
+    cursor: 'pointer',
+  },
+}))(TableRow);
+
 const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIssue, index, history }) => {
   const { id, status, owner, effort, created, due, title } = issue;
   const selectLocation = { pathname: `/issues/${id}`, search };
 
+  const handlePropagation = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <TableRow
+    <StyledTableRow
       onClick={() => {
         history.push(selectLocation);
       }}
@@ -41,7 +51,7 @@ const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIs
       <TableCell>{created.toDateString()}</TableCell>
       <TableCell>{due ? due.toDateString() : ' '}</TableCell>
       <TableCell>{title}</TableCell>
-      <TableCell align="right">
+      <TableCell align="right" onClick={handlePropagation}>
         <Tooltip title="Edit issue">
           <IconButton to={`/edit/${id}`} component={Link}>
             <EditIcon style={{ color: '#000' }} />
@@ -68,7 +78,7 @@ const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIs
           </IconButton>
         </Tooltip>
       </TableCell>
-    </TableRow>
+    </StyledTableRow>
   );
 });
 

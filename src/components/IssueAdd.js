@@ -1,4 +1,7 @@
 import React from 'react';
+import FormGroup from '@material-ui/core/FormGroup';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 
 class IssueAdd extends React.Component {
   handleSubmit = (e) => {
@@ -19,11 +22,15 @@ class IssueAdd extends React.Component {
 
   render() {
     return (
-      <form name="issueAdd" onSubmit={this.handleSubmit}>
-        <input type="text" name="owner" placeholder="Owner" />
-        <input type="text" name="title" placeholder="Title" />
-        <button type="submit">Add</button>
-      </form>
+      <FormGroup row>
+        <form name="issueAdd" onSubmit={this.handleSubmit}>
+          <Input style={{ marginRight: 20 }} type="text" name="owner" placeholder="Owner" />
+          <Input style={{ marginRight: 20 }} type="text" name="title" placeholder="Title" />
+          <Button type="submit" style={{ backgroundColor: '#3f51b5', color: '#fff' }}>
+            Add
+          </Button>
+        </form>
+      </FormGroup>
     );
   }
 }

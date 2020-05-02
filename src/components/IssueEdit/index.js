@@ -16,12 +16,20 @@ import {
   TextField,
   Button,
   Snackbar,
+  Drawer,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { withStyles } from '@material-ui/styles';
+
+const StyledDrawer = withStyles({
+  paper: {
+    width: '30%',
+  },
+})(Drawer);
 
 class IssueEdit extends React.Component {
   constructor() {
@@ -30,6 +38,7 @@ class IssueEdit extends React.Component {
       issue: {},
       isFieldsValid: true,
       updatedSuccessfully: false,
+      drawer: true,
     };
   }
 
@@ -117,9 +126,18 @@ class IssueEdit extends React.Component {
     }
   };
 
+  toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    const { history } = this.props;
+    history.push('/issues');
+    this.setState({ drawer: open });
+  };
+
   render() {
     const { id, title, status, owner, effort, description, created, due } = this.state.issue;
-    const { isFieldsValid, updatedSuccessfully } = this.state;
+    const { isFieldsValid, updatedSuccessfully, drawer } = this.state;
 
     const propsId = this.props.match.params.id;
     if (id === undefined) {
@@ -139,9 +157,21 @@ class IssueEdit extends React.Component {
     }
 
     return (
-      <div style={{ maxWidth: 600 }}>
-        <Card style={{ padding: 16 }}>
-          <CardHeader title={`Editing issue ${id}`} style={{ backgroundColor: 'orange' }} />
+      <StyledDrawer
+        classes={{
+          paper: {
+            width: '30%',
+          },
+        }}
+        anchor={'right'}
+        open={drawer}
+        onClose={this.toggleDrawer(false)}
+      >
+        <Card style={{ margin: 20, width: '94%' }}>
+          <CardHeader
+            title={`Editing issue ${id}`}
+            style={{ backgroundColor: 'orangered', color: 'white', textAlign: 'center' }}
+          />
           <CardContent>
             <FormControl style={{ display: 'block', marginBottom: 15 }}>
               <form name="issueEdit" onSubmit={this.handleSubmit}>
@@ -261,6 +291,7 @@ class IssueEdit extends React.Component {
         </Card>
         <Snackbar
           open={updatedSuccessfully}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           autoHideDuration={3000}
           onClose={() => {
             this.setState({ updatedSuccessfully: false });
@@ -270,12 +301,14 @@ class IssueEdit extends React.Component {
             Updated issue successfully
           </Alert>
         </Snackbar>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0 20px', width: '94%' }}>
           <Button
             startIcon={<ArrowBackIosIcon />}
             variant="contained"
             type="submit"
-            style={{ backgroundColor: 'orange', color: '#fff' }}
+            style={{ backgroundColor: 'orangered', color: '#fff' }}
+            to={`/edit/${id - 1}`}
+            component={Link}
           >
             Prev
           </Button>
@@ -283,12 +316,14 @@ class IssueEdit extends React.Component {
             endIcon={<ArrowForwardIosIcon />}
             variant="contained"
             type="submit"
-            style={{ backgroundColor: 'orange', color: '#fff' }}
+            style={{ backgroundColor: 'orangered', color: '#fff' }}
+            to={`/edit/${id + 1}`}
+            component={Link}
           >
             Next
           </Button>
         </div>
-      </div>
+      </StyledDrawer>
     );
   }
 }

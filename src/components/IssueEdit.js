@@ -1,6 +1,5 @@
-import './styles.css';
 import React from 'react';
-import graphQLFetch from '../../graphQLFetch';
+import graphQLFetch from '../graphQLFetch';
 import { Link } from 'react-router-dom';
 
 import {
@@ -148,7 +147,7 @@ class IssueEdit extends React.Component {
       if (propsId !== null) {
         return (
           <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
-            <h3>{`Issue with ID ${propsId} not found.`}</h3>
+            <h3>{`Issue with ID ${propsId} not found. If you just created it, wait while we redirect you to the edit page`}</h3>
           </StyledDrawer>
         );
       }

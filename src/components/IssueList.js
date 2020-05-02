@@ -6,11 +6,13 @@ import graphQLFetch from '../graphQLFetch';
 import URLSearchParams from 'url-search-params';
 import IssueDetail from './IssueDetail';
 import { Route } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: [] };
+    this.state = { issues: [], toastVisible: false, toastMessage: '' };
   }
 
   componentDidMount() {
@@ -44,7 +46,7 @@ class IssueList extends React.Component {
         created effort due
       }
     }`;
-    const data = await graphQLFetch(query, vars);
+    const data = await graphQLFetch(query, vars, this.showError);
     if (data) {
       this.setState({ issues: data.issueList });
     }
@@ -56,7 +58,7 @@ class IssueList extends React.Component {
         id
       }
     }`;
-    const data = await graphQLFetch(query, { issue });
+    const data = await graphQLFetch(query, { issue }, this.showError);
     if (data) {
       this.loadData();
     }
@@ -71,7 +73,7 @@ class IssueList extends React.Component {
     }`;
 
     const { issues } = this.state;
-    const data = await graphQLFetch(query, { id: issues[index].id });
+    const data = await graphQLFetch(query, { id: issues[index].id }, this.showError);
     if (data) {
       this.setState((prevState) => {
         const newList = [...prevState.issues];
@@ -93,7 +95,7 @@ class IssueList extends React.Component {
       history,
     } = this.props;
     const { id } = issues[index];
-    const data = await graphQLFetch(query, { id });
+    const data = await graphQLFetch(query, { id }, this.showError);
     if (data && data.issueDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.issues];
@@ -108,9 +110,14 @@ class IssueList extends React.Component {
     }
   };
 
+  showError = (message) => {
+    this.setState({ toastVisible: true, toastMessage: message });
+  };
+
   render() {
     const { state, createIssue } = this;
     const { match } = this.props;
+    const { toastVisible, toastMessage } = this.state;
     return (
       <React.Fragment>
         <IssueFilter />
@@ -122,6 +129,18 @@ class IssueList extends React.Component {
         />
         <IssueAdd createIssue={createIssue} />
         <Route path={`${match.path}/:id`} component={IssueDetail} />
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={toastVisible}
+          autoHideDuration={3000}
+          onClose={() => {
+            this.setState({ toastVisible: false });
+          }}
+        >
+          <Alert variant="filled" severity="error">
+            {toastMessage}
+          </Alert>
+        </Snackbar>
       </React.Fragment>
     );
   }

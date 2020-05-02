@@ -9,6 +9,7 @@ import { red } from '@material-ui/core/colors';
 const useStyles = (theme) => ({
   drawerPaper: {
     width: '30%',
+    minWidth: 500,
   },
   cardRoot: {
     width: '90%',

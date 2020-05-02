@@ -28,6 +28,7 @@ import { withStyles } from '@material-ui/styles';
 const StyledDrawer = withStyles({
   paper: {
     width: '30%',
+    minWidth: 500,
   },
 })(Drawer);
 
@@ -157,16 +158,7 @@ class IssueEdit extends React.Component {
     }
 
     return (
-      <StyledDrawer
-        classes={{
-          paper: {
-            width: '30%',
-          },
-        }}
-        anchor={'right'}
-        open={drawer}
-        onClose={this.toggleDrawer(false)}
-      >
+      <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
         <Card style={{ margin: 20, width: '94%' }}>
           <CardHeader
             title={`Editing issue ${id}`}

@@ -1,7 +1,6 @@
 import React from 'react';
 import IssueFilter from './IssueFilter';
 import IssueTable from './IssueTable';
-import IssueAdd from './IssueAdd';
 import graphQLFetch from '../graphQLFetch';
 import URLSearchParams from 'url-search-params';
 import IssueDetail from './IssueDetail';
@@ -49,18 +48,6 @@ class IssueList extends React.Component {
     const data = await graphQLFetch(query, vars, this.showError);
     if (data) {
       this.setState({ issues: data.issueList });
-    }
-  };
-
-  createIssue = async (issue) => {
-    const query = `mutation issueAdd($issue: IssueInputs!) {
-      issueAdd(issue: $issue) {
-        id
-      }
-    }`;
-    const data = await graphQLFetch(query, { issue }, this.showError);
-    if (data) {
-      this.loadData();
     }
   };
 
@@ -127,7 +114,6 @@ class IssueList extends React.Component {
           deleteIssue={this.deleteIssue}
           style={{ marginTop: 20, marginBottom: 20 }}
         />
-        <IssueAdd createIssue={createIssue} />
         <Route path={`${match.path}/:id`} component={IssueDetail} />
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

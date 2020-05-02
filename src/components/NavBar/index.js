@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles.css';
 import { NavLink } from 'react-router-dom';
+import IssueAddNavItem from '../IssueAddNavItem';
 
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -63,11 +64,7 @@ class NavBar extends React.Component {
             </Button>
           </div>
 
-          <Tooltip title="Add issue">
-            <IconButton color="inherit">
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
+          <IssueAddNavItem />
           <MenuGrow />
         </Toolbar>
       </AppBar>

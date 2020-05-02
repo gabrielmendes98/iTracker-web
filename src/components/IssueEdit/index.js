@@ -2,9 +2,6 @@ import './styles.css';
 import React from 'react';
 import graphQLFetch from '../../graphQLFetch';
 import { Link } from 'react-router-dom';
-import NumInput from '../NumInput';
-import DateInput from '../DateInput';
-import TextInput from '../TextInput';
 
 import {
   FormControl,
@@ -40,6 +37,8 @@ class IssueEdit extends React.Component {
       isFieldsValid: true,
       updatedSuccessfully: false,
       drawer: true,
+      toastVisible: false,
+      toastMessage: '',
     };
   }
 
@@ -65,7 +64,7 @@ class IssueEdit extends React.Component {
         params: { id },
       },
     } = this.props;
-    const data = await graphQLFetch(query, { id });
+    const data = await graphQLFetch(query, { id }, this.showError);
     const issue = data ? data.issue : {};
     this.setState({ issue });
   };
@@ -121,7 +120,7 @@ class IssueEdit extends React.Component {
     }`;
 
     const { id, created, ...changes } = issue;
-    const data = await graphQLFetch(query, { id, changes });
+    const data = await graphQLFetch(query, { id, changes }, this.showError);
     if (data) {
       this.setState({ issue: data.issueUpdate, isFieldsValid: true, updatedSuccessfully: true });
     }
@@ -136,14 +135,22 @@ class IssueEdit extends React.Component {
     this.setState({ drawer: open });
   };
 
+  showError = (message) => {
+    this.setState({ toastVisible: true, toastMessage: message });
+  };
+
   render() {
     const { id, title, status, owner, effort, description, created, due } = this.state.issue;
-    const { isFieldsValid, updatedSuccessfully, drawer } = this.state;
+    const { isFieldsValid, updatedSuccessfully, drawer, toastMessage, toastVisible } = this.state;
 
     const propsId = this.props.match.params.id;
     if (id === undefined) {
       if (propsId !== null) {
-        return <h3>{`Issue with ID ${propsId} not found.`}</h3>;
+        return (
+          <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
+            <h3>{`Issue with ID ${propsId} not found.`}</h3>
+          </StyledDrawer>
+        );
       }
       return null;
     }
@@ -281,18 +288,7 @@ class IssueEdit extends React.Component {
             </FormControl>
           </CardContent>
         </Card>
-        <Snackbar
-          open={updatedSuccessfully}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          autoHideDuration={3000}
-          onClose={() => {
-            this.setState({ updatedSuccessfully: false });
-          }}
-        >
-          <Alert variant="filled" severity="success">
-            Updated issue successfully
-          </Alert>
-        </Snackbar>
+
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0 20px', width: '94%' }}>
           <Button
             startIcon={<ArrowBackIosIcon />}
@@ -315,6 +311,30 @@ class IssueEdit extends React.Component {
             Next
           </Button>
         </div>
+        <Snackbar
+          open={updatedSuccessfully}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          autoHideDuration={3000}
+          onClose={() => {
+            this.setState({ updatedSuccessfully: false });
+          }}
+        >
+          <Alert variant="filled" severity="success">
+            Updated issue successfully
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={toastVisible}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          autoHideDuration={3000}
+          onClose={() => {
+            this.setState({ toastVisible: false });
+          }}
+        >
+          <Alert variant="filled" severity="error">
+            {toastMessage}
+          </Alert>
+        </Snackbar>
       </StyledDrawer>
     );
   }

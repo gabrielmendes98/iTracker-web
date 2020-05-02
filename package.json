@@ -1,7 +1,7 @@
 {
   "name": "issue-tracker-ui",
   "version": "1.0.0",
-  "description": "This is the code for the issue tracker ui server",
+  "description": "This is the code for the issue tracker ui server and interface",
   "main": "index.js",
   "scripts": {
     "#start": "UI server. HMR is enabled in dev mode.",
@@ -15,19 +15,32 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/gabrielmendes98/issue-tracker.git"
   },
+  "keywords": [
+    "MERN",
+    "react",
+    "mongodb",
+    "express",
+    "node"
+  ],
   "author": "gabrielmssantiago@gmail.com",
   "license": "ISC",
-  "homepage": "",
+  "bugs": {
+    "url": "https://github.com/gabrielmendes98/issue-tracker/issues"
+  },
+  "homepage": "https://github.com/gabrielmendes98/issue-tracker#readme",
   "dependencies": {
+    "@date-io/date-fns": "^1.3.13",
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.51",
+    "@material-ui/pickers": "^3.2.10",
     "babel-polyfill": "^6.26.0",
+    "date-fns": "^2.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "http-proxy-middleware": "^1.0.3",
-    "lint": "eslint . --ext js,jsx --ignore-pattern public",
     "nodemon": "^1.18.9",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -52,6 +65,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
     "style-loader": "^1.1.4",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",

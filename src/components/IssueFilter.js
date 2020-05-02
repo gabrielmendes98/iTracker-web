@@ -128,6 +128,7 @@ class IssueFilter extends React.Component {
                 label="Effort Min"
                 variant="outlined"
                 value={effortMin}
+                margin="dense"
                 onChange={this.onChangeEffortMin}
               />
             </Grid>
@@ -137,6 +138,7 @@ class IssueFilter extends React.Component {
                 label="Effort Max"
                 variant="outlined"
                 value={effortMax}
+                margin="dense"
                 onChange={this.onChangeEffortMax}
               />
             </Grid>

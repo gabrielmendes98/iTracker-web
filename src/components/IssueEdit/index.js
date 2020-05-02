@@ -6,12 +6,30 @@ import NumInput from '../NumInput';
 import DateInput from '../DateInput';
 import TextInput from '../TextInput';
 
+import {
+  FormControl,
+  Card,
+  CardHeader,
+  CardContent,
+  Grid,
+  Select,
+  TextField,
+  Button,
+  Snackbar,
+} from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
 class IssueEdit extends React.Component {
   constructor() {
     super();
     this.state = {
       issue: {},
-      invalidFields: {},
+      isFieldsValid: true,
+      updatedSuccessfully: false,
     };
   }
 
@@ -39,7 +57,7 @@ class IssueEdit extends React.Component {
     } = this.props;
     const data = await graphQLFetch(query, { id });
     const issue = data ? data.issue : {};
-    this.setState({ issue, invalidFields: {} });
+    this.setState({ issue });
   };
 
   onChange = (e, naturalValue) => {
@@ -50,10 +68,35 @@ class IssueEdit extends React.Component {
     }));
   };
 
-  handleSubmit = async (e) => {
+  handleDateChange = (date) => {
+    const newDate = new Date(date);
+    this.setState((prevState) => ({
+      issue: { ...prevState.issue, due: newDate },
+    }));
+  };
+
+  isAllFieldsValid = (e) => {
     e.preventDefault();
-    const { issue, invalidFields } = this.state;
-    if (Object.keys(invalidFields).length !== 0) return;
+    const form = document.forms.issueEdit;
+    let isValid = true;
+    [...form.elements].forEach((input) => {
+      if (input.getAttribute('aria-invalid') == true) {
+        console.log(input);
+        console.log(input.getAttribute('aria-invalid'));
+        isValid = false;
+      }
+    });
+    return isValid;
+  };
+
+  handleSubmit = async (e) => {
+    this.isAllFieldsValid(e);
+    if (!this.isAllFieldsValid(e)) {
+      this.setState({ isFieldsValid: false });
+      return;
+    }
+    e.preventDefault();
+    const { issue } = this.state;
     const query = `mutation issueUpdate(
       $id: Int!
       $changes: IssueUpdateInputs!
@@ -70,24 +113,13 @@ class IssueEdit extends React.Component {
     const { id, created, ...changes } = issue;
     const data = await graphQLFetch(query, { id, changes });
     if (data) {
-      this.setState({ issue: data.issueUpdate });
-      alert('Updated issue successfully');
+      this.setState({ issue: data.issueUpdate, isFieldsValid: true, updatedSuccessfully: true });
     }
-  };
-
-  onValidityChange = (event, valid) => {
-    const { name } = event.target;
-    this.setState((prevState) => {
-      const invalidFields = { ...prevState.invalidFields, [name]: !valid };
-      if (valid) {
-        delete invalidFields[name];
-      }
-      return { invalidFields };
-    });
   };
 
   render() {
     const { id, title, status, owner, effort, description, created, due } = this.state.issue;
+    const { isFieldsValid, updatedSuccessfully } = this.state;
 
     const propsId = this.props.match.params.id;
     if (id === undefined) {
@@ -97,88 +129,166 @@ class IssueEdit extends React.Component {
       return null;
     }
 
-    const { invalidFields } = this.state;
     let validationMessage;
-    if (Object.keys(invalidFields).length !== 0) {
-      validationMessage = <div className="error">Please correct the invalid fields before submitting.</div>;
+    if (!isFieldsValid) {
+      validationMessage = (
+        <Alert variant="filled" severity="error">
+          Please correct the fields in red
+        </Alert>
+      );
     }
 
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h3>{`Editing issue: ${id}`}</h3>
-        <table>
-          <tbody>
-            <tr>
-              <td>Created:</td>
-              <td>{created.toDateString()}</td>
-            </tr>
-            <tr>
-              <td>Status:</td>
-              <td>
-                <select name="status" value={status} onChange={this.onChange}>
-                  <option value="New">New</option>
-                  <option value="Assigned">Assigned</option>
-                  <option value="Fixed">Fixed</option>
-                  <option value="Closed">Closed</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>Owner:</td>
-              <td>
-                <TextInput name="owner" value={owner} onChange={this.onChange} key={id} />
-              </td>
-            </tr>
-            <tr>
-              <td>Effort:</td>
-              <td>
-                <NumInput name="effort" value={effort} onChange={this.onChange} key={id} />
-              </td>
-            </tr>
-            <tr>
-              <td>Due:</td>
-              <td>
-                <DateInput
-                  name="due"
-                  value={due}
-                  onChange={this.onChange}
-                  onValidityChange={this.onValidityChange}
-                  key={id}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Title:</td>
-              <td>
-                <TextInput size={50} name="title" value={title} onChange={this.onChange} key={id} />
-              </td>
-            </tr>
-            <tr>
-              <td>Description:</td>
-              <td>
-                <TextInput
-                  rows={8}
-                  cols={50}
-                  name="description"
-                  value={description}
-                  onChange={this.onChange}
-                  key={id}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td />
-              <td>
-                <button type="submit">Submit</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        {validationMessage}
-        <Link to={`/edit/${id - 1}`}>Prev</Link>
-        {' | '}
-        <Link to={`/edit/${id + 1}`}>Next</Link>
-      </form>
+      <div style={{ maxWidth: 600 }}>
+        <Card style={{ padding: 16 }}>
+          <CardHeader title={`Editing issue ${id}`} style={{ backgroundColor: 'orange' }} />
+          <CardContent>
+            <FormControl style={{ display: 'block', marginBottom: 15 }}>
+              <form name="issueEdit" onSubmit={this.handleSubmit}>
+                <Grid container alignItems="flex-start" spacing={2}>
+                  <Grid item xs={3}>
+                    <span>Created</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    {created.toDateString()}
+                  </Grid>
+                  <Grid item xs={3}>
+                    <span>Status</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Select style={{ width: '100%' }} native name="status" value={status} onChange={this.onChange}>
+                      <option value="" />
+                      <option value="New">New</option>
+                      <option value="Assigned">Assigned</option>
+                      <option value="Fixed">Fixed</option>
+                      <option value="Closed">Closed</option>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <span>Owner</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="owner"
+                      value={owner}
+                      onChange={this.onChange}
+                      key={id}
+                      variant="outlined"
+                      margin="dense"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <span>Effort</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="effort"
+                      value={effort}
+                      onChange={this.onChange}
+                      key={id}
+                      variant="outlined"
+                      type="number"
+                      margin="dense"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <span>Due</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        style={{ width: '100%' }}
+                        value={due}
+                        onChange={this.handleDateChange}
+                        key={id}
+                        name="due"
+                        disableToolbar
+                        variant="inline"
+                        format="MM/dd/yyyy"
+                        margin="dense"
+                        minDate={Date.now()}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <span>Title</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="title"
+                      value={title}
+                      onChange={this.onChange}
+                      key={id}
+                      variant="outlined"
+                      margin="dense"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <span>Description</span>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <TextField
+                      style={{ width: '100%' }}
+                      name="description"
+                      value={description}
+                      onChange={this.onChange}
+                      key={id}
+                      rows={8}
+                      multiline
+                      variant="outlined"
+                      margin="dense"
+                    />
+                  </Grid>
+                  <Grid item xs={3}></Grid>
+                  <Grid item xs={2}>
+                    <Button variant="contained" type="submit" style={{ backgroundColor: '#388E3C', color: '#fff' }}>
+                      Submit
+                    </Button>
+                  </Grid>
+                  <Grid item xs={7}>
+                    {validationMessage}
+                  </Grid>
+                </Grid>
+              </form>
+            </FormControl>
+          </CardContent>
+        </Card>
+        <Snackbar
+          open={updatedSuccessfully}
+          autoHideDuration={3000}
+          onClose={() => {
+            this.setState({ updatedSuccessfully: false });
+          }}
+        >
+          <Alert variant="filled" severity="success">
+            Updated issue successfully
+          </Alert>
+        </Snackbar>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            startIcon={<ArrowBackIosIcon />}
+            variant="contained"
+            type="submit"
+            style={{ backgroundColor: 'orange', color: '#fff' }}
+          >
+            Prev
+          </Button>
+          <Button
+            endIcon={<ArrowForwardIosIcon />}
+            variant="contained"
+            type="submit"
+            style={{ backgroundColor: 'orange', color: '#fff' }}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     );
   }
 }

@@ -3,8 +3,9 @@ import graphQLFetch from '../graphQLFetch';
 
 import { withStyles } from '@material-ui/styles';
 import Drawer from '@material-ui/core/Drawer';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { Card, CardHeader, CardContent, Snackbar } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = (theme) => ({
   drawerPaper: {
@@ -27,7 +28,7 @@ const useStyles = (theme) => ({
 class IssueDetail extends React.Component {
   constructor() {
     super();
-    this.state = { issue: {}, drawer: true };
+    this.state = { issue: {}, drawer: true, toastVisible: false, toastMessage: '' };
   }
 
   componentDidMount() {
@@ -59,7 +60,7 @@ class IssueDetail extends React.Component {
         id description title
       }
     }`;
-    const data = await graphQLFetch(query, { id });
+    const data = await graphQLFetch(query, { id }, this.showError);
     if (data) {
       this.setState({ issue: data.issue });
     } else {
@@ -76,12 +77,16 @@ class IssueDetail extends React.Component {
     this.setState({ drawer: open });
   };
 
+  showError = (message) => {
+    this.setState({ toastVisible: true, toastMessage: message });
+  };
+
   render() {
     const { classes } = this.props;
     const {
       issue: { description, title },
     } = this.state;
-    const { drawer } = this.state;
+    const { drawer, toastVisible, toastMessage } = this.state;
     const {
       match: {
         params: { id },
@@ -108,6 +113,18 @@ class IssueDetail extends React.Component {
             </pre>
           </CardContent>
         </Card>
+        <Snackbar
+          open={toastVisible}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          autoHideDuration={3000}
+          onClose={() => {
+            this.setState({ toastVisible: false });
+          }}
+        >
+          <Alert variant="filled" severity="error">
+            {toastMessage}
+          </Alert>
+        </Snackbar>
       </Drawer>
     );
   }

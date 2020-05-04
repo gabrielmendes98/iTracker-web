@@ -1,8 +1,14 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const express = require('express');
-const path = require('path');
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import express from 'express';
+import path from 'path';
+import SourceMapSupport from 'source-map-support';
+import dotenv from 'dotenv';
+import render from './render';
+
 const app = express();
-require('dotenv').config();
+
+SourceMapSupport.install();
+dotenv.config();
 
 const enableHMR = (process.env.ENABLE_HMR || 'true') === 'true';
 if (enableHMR && process.env.NODE_ENV !== 'production') {
@@ -12,7 +18,7 @@ if (enableHMR && process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const devMiddleware = require('webpack-dev-middleware');
   const hotMiddleware = require('webpack-hot-middleware');
-  const config = require('../webpack.config.js');
+  const config = require('../webpack.config.js')[0];
   config.entry.app.push('webpack-hot-middleware/client');
   config.plugins = config.plugins || [];
   config.plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -37,6 +43,8 @@ if (apiProxyTarget) {
 app.get('/env.js', (req, res) => {
   res.send(`window.ENV = ${JSON.stringify(env)}`);
 });
+
+app.get('/about', render);
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public/index.html'));

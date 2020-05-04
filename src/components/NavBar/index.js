@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import IssueAddNavItem from '../IssueAddNavItem';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -32,7 +32,9 @@ const MenuGrow = () => {
         <MoreVertIcon />
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>About</MenuItem>
+        <MenuItem to="/about" component={Link} onClick={handleClose}>
+          About
+        </MenuItem>
       </Menu>
     </div>
   );

@@ -77,8 +77,13 @@ const serverConfig = {
               ],
               '@babel/preset-react',
             ],
+            plugins: ['@babel/plugin-proposal-class-properties'],
           },
         },
+      },
+      {
+        test: /\.css$/,
+        use: ['css-loader'],
       },
     ],
   },

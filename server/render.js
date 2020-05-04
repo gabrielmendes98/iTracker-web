@@ -4,6 +4,8 @@ import ReactDOMServer from 'react-dom/server';
 import App from '../src/App';
 import template from './template';
 
+import { StaticRouter } from 'react-router-dom';
+
 function render(req, res) {
   const element = (
     <StaticRouter location={req.url} context={{}}>

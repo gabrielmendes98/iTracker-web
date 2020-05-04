@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import About from '../src/components/About';
+import App from '../src/App';
 import template from './template';
 
 function render(req, res) {
-  const body = ReactDOMServer.renderToString(<About />);
+  const element = (
+    <StaticRouter location={req.url} context={{}}>
+      <App />
+    </StaticRouter>
+  );
+  const body = ReactDOMServer.renderToString(element);
   res.send(template(body));
 }
 

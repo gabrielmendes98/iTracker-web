@@ -4,7 +4,6 @@ import IssueTable from './IssueTable';
 import graphQLFetch from '../graphQLFetch';
 import URLSearchParams from 'url-search-params';
 import IssueDetail from './IssueDetail';
-import { Route } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import store from '../store.js';
@@ -13,8 +12,9 @@ class IssueList extends React.Component {
   constructor() {
     super();
     const issues = store.initialData ? store.initialData.issueList : null;
+    const selectedIssue = store.initialData ? store.initialData.issue : null;
     delete store.initialData;
-    this.state = { issues, toastVisible: false, toastMessage: '' };
+    this.state = { issues, selectedIssue, toastVisible: false, toastMessage: '' };
   }
 
   componentDidMount() {
@@ -25,16 +25,24 @@ class IssueList extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       location: { search: prevSearch },
+      match: {
+        params: { id: prevId },
+      },
     } = prevProps;
     const {
       location: { search },
+      match: {
+        params: { id },
+      },
     } = this.props;
-    if (prevSearch !== search) this.loadData();
+    if (prevSearch !== search || prevId !== id) {
+      this.loadData();
+    }
   }
 
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
-    const vars = {};
+    const vars = { hasSelection: false, selectedId: 0 };
     if (params.get('status')) vars.status = params.get('status');
 
     const effortMin = parseInt(params.get('effortMin'), 10);
@@ -42,10 +50,21 @@ class IssueList extends React.Component {
     const effortMax = parseInt(params.get('effortMax'), 10);
     if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
 
+    const {
+      params: { id },
+    } = match;
+    const idInt = parseInt(id, 10);
+    if (!Number.isNaN(idInt)) {
+      vars.hasSelection = true;
+      vars.selectedId = idInt;
+    }
+
     const query = `query issueList(
       $status: StatusType
       $effortMin: Int
       $effortMax: Int
+      $hasSelection: Boolean!
+      $selectedId: Int!
     ) {
       issueList(
         status: $status
@@ -54,6 +73,9 @@ class IssueList extends React.Component {
       ) {
         id title status owner
         created effort due
+      }
+      issue(id: $selectedId) @include (if : $hasSelection) {
+        id description title
       }
     }`;
 
@@ -64,10 +86,11 @@ class IssueList extends React.Component {
   loadData = async () => {
     const {
       location: { search },
+      match,
     } = this.props;
-    const data = await IssueList.fetchData(null, search, this.showError);
+    const data = await IssueList.fetchData(match, search, this.showError);
     if (data) {
-      this.setState({ issues: data.issueList });
+      this.setState({ issues: data.issueList, selectedIssue: data.issue });
     }
   };
 
@@ -121,10 +144,18 @@ class IssueList extends React.Component {
     this.setState({ toastVisible: true, toastMessage: message });
   };
 
+  toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    const { history } = this.props;
+    history.push('/issues');
+  };
+
   render() {
     const { issues } = this.state;
     if (issues === null) return null;
-    const { match } = this.props;
+    const { selectedIssue } = this.state;
     const { toastVisible, toastMessage } = this.state;
     return (
       <React.Fragment>
@@ -135,7 +166,7 @@ class IssueList extends React.Component {
           deleteIssue={this.deleteIssue}
           style={{ marginTop: 20, marginBottom: 20 }}
         />
-        <Route path={`${match.path}/:id`} component={IssueDetail} />
+        <IssueDetail issue={selectedIssue} drawer={true} toggleDrawer={this.toggleDrawer} />
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           open={toastVisible}

@@ -7,15 +7,19 @@ import IssueDetail from './IssueDetail';
 import { Route } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import store from '../store.js';
 
 class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: [], toastVisible: false, toastMessage: '' };
+    const issues = store.initialData ? store.initialData.issueList : null;
+    delete store.initialData;
+    this.state = { issues, toastVisible: false, toastMessage: '' };
   }
 
   componentDidMount() {
-    this.loadData();
+    const { issues } = this.state;
+    if (issues == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -28,24 +32,40 @@ class IssueList extends React.Component {
     if (prevSearch !== search) this.loadData();
   }
 
-  loadData = async () => {
-    const {
-      location: { search },
-    } = this.props;
+  static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = {};
     if (params.get('status')) vars.status = params.get('status');
+
     const effortMin = parseInt(params.get('effortMin'), 10);
     if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
     const effortMax = parseInt(params.get('effortMax'), 10);
     if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
-    const query = `query issueList($status: StatusType, $effortMin: Int, $effortMax: Int) {
-      issueList(status: $status, effortMin: $effortMin, effortMax: $effortMax) {
+
+    const query = `query issueList(
+      $status: StatusType
+      $effortMin: Int
+      $effortMax: Int
+    ) {
+      issueList(
+        status: $status
+        effortMin: $effortMin
+        effortMax: $effortMax
+      ) {
         id title status owner
         created effort due
       }
     }`;
-    const data = await graphQLFetch(query, vars, this.showError);
+
+    const data = await graphQLFetch(query, vars, showError);
+    return data;
+  }
+
+  loadData = async () => {
+    const {
+      location: { search },
+    } = this.props;
+    const data = await IssueList.fetchData(null, search, this.showError);
     if (data) {
       this.setState({ issues: data.issueList });
     }
@@ -102,14 +122,15 @@ class IssueList extends React.Component {
   };
 
   render() {
-    const { state, createIssue } = this;
+    const { issues } = this.state;
+    if (issues === null) return null;
     const { match } = this.props;
     const { toastVisible, toastMessage } = this.state;
     return (
       <React.Fragment>
         <IssueFilter />
         <IssueTable
-          issues={state.issues}
+          issues={issues}
           closeIssue={this.closeIssue}
           deleteIssue={this.deleteIssue}
           style={{ marginTop: 20, marginBottom: 20 }}

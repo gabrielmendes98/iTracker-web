@@ -1,6 +1,5 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import express from 'express';
-import path from 'path';
 import SourceMapSupport from 'source-map-support';
 import dotenv from 'dotenv';
 import render from './render';
@@ -50,12 +49,8 @@ app.get('/env.js', (req, res) => {
   res.send(`window.ENV = ${JSON.stringify(env)}`);
 });
 
-app.get('/about', (req, res, next) => {
+app.get('*', (req, res, next) => {
   render(req, res, next);
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('public/index.html'));
 });
 
 app.listen(port, () => {

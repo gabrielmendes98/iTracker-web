@@ -6,11 +6,11 @@ import template from './template';
 
 import { StaticRouter } from 'react-router-dom';
 
-import graphQLFetch from '../src/graphQLFetch.js';
+import About from '../src/components/About';
 import store from '../src/store.js';
 
 async function render(req, res) {
-  const initialData = await graphQLFetch('query{about}');
+  const initialData = About.fetchData();
   console.log(initialData);
   store.initialData = initialData;
   const element = (

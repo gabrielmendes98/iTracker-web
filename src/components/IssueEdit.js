@@ -21,6 +21,8 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { withStyles } from '@material-ui/styles';
 
+import store from '../store.js';
+
 const StyledDrawer = withStyles({
   paper: {
     width: '30%',
@@ -31,8 +33,10 @@ const StyledDrawer = withStyles({
 class IssueEdit extends React.Component {
   constructor() {
     super();
+    const issue = store.initialData ? store.initialData.issue : null;
+    delete store.initialData;
     this.state = {
-      issue: {},
+      issue,
       isFieldsValid: true,
       updatedSuccessfully: false,
       drawer: true,
@@ -42,7 +46,8 @@ class IssueEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.loadData();
+    const { issue } = this.state;
+    if (issue === null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -51,21 +56,25 @@ class IssueEdit extends React.Component {
     if (id !== prevId) this.loadData();
   }
 
-  loadData = async () => {
+  static async fetchData(match, showError) {
     const query = `query issue($id: Int!) {
       issue(id: $id) {
-        id title status owner effort created due description
+        id title status owner
+        effort created due description
       }
     }`;
 
     const {
-      match: {
-        params: { id },
-      },
-    } = this.props;
-    const data = await graphQLFetch(query, { id }, this.showError);
-    const issue = data ? data.issue : {};
-    this.setState({ issue });
+      params: { id },
+    } = match;
+    const result = await graphQLFetch(query, { id }, showError);
+    return result;
+  }
+
+  loadData = async () => {
+    const { match } = this.props;
+    const data = await IssueEdit.fetchData(match, this.showError);
+    this.setState({ issue: data ? data.issue : {} });
   };
 
   onChange = (e, naturalValue) => {
@@ -139,6 +148,9 @@ class IssueEdit extends React.Component {
   };
 
   render() {
+    const { issue } = this.state;
+    if (issue === null) return null;
+
     const { id, title, status, owner, effort, description, created, due } = this.state.issue;
     const { isFieldsValid, updatedSuccessfully, drawer, toastMessage, toastVisible } = this.state;
 

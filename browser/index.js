@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import App from '../src/App';
 import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <React.StrictMode>
     <BrowserRouter>
       <App />

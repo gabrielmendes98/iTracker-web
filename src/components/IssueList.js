@@ -4,9 +4,8 @@ import IssueTable from './IssueTable';
 import graphQLFetch from '../graphQLFetch';
 import URLSearchParams from 'url-search-params';
 import IssueDetail from './IssueDetail';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import store from '../store.js';
+import withToast from './withToast';
 
 class IssueList extends React.Component {
   constructor() {
@@ -14,7 +13,7 @@ class IssueList extends React.Component {
     const issues = store.initialData ? store.initialData.issueList : null;
     const selectedIssue = store.initialData ? store.initialData.issue : null;
     delete store.initialData;
-    this.state = { issues, selectedIssue, toastVisible: false, toastMessage: '' };
+    this.state = { issues, selectedIssue };
   }
 
   componentDidMount() {
@@ -87,8 +86,9 @@ class IssueList extends React.Component {
     const {
       location: { search },
       match,
+      showError,
     } = this.props;
-    const data = await IssueList.fetchData(match, search, this.showError);
+    const data = await IssueList.fetchData(match, search, showError);
     if (data) {
       this.setState({ issues: data.issueList, selectedIssue: data.issue });
     }
@@ -103,7 +103,8 @@ class IssueList extends React.Component {
     }`;
 
     const { issues } = this.state;
-    const data = await graphQLFetch(query, { id: issues[index].id }, this.showError);
+    const { showError } = this.props;
+    const data = await graphQLFetch(query, { id: issues[index].id }, showError);
     if (data) {
       this.setState((prevState) => {
         const newList = [...prevState.issues];
@@ -124,8 +125,9 @@ class IssueList extends React.Component {
       location: { pathname, search },
       history,
     } = this.props;
+    const { showSuccess, showError } = this.props;
     const { id } = issues[index];
-    const data = await graphQLFetch(query, { id }, this.showError);
+    const data = await graphQLFetch(query, { id }, showError);
     if (data && data.issueDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.issues];
@@ -135,13 +137,10 @@ class IssueList extends React.Component {
         newList.splice(index, 1);
         return { issues: newList };
       });
+      showSuccess(`Deleted issue ${id} successfully.`);
     } else {
       this.loadData();
     }
-  };
-
-  showError = (message) => {
-    this.setState({ toastVisible: true, toastMessage: message });
   };
 
   toggleDrawer = (open) => (event) => {
@@ -156,7 +155,6 @@ class IssueList extends React.Component {
     const { issues } = this.state;
     if (issues === null) return null;
     const { selectedIssue } = this.state;
-    const { toastVisible, toastMessage } = this.state;
     return (
       <React.Fragment>
         <IssueFilter />
@@ -167,21 +165,12 @@ class IssueList extends React.Component {
           style={{ marginTop: 20, marginBottom: 20 }}
         />
         <IssueDetail issue={selectedIssue} drawer={true} toggleDrawer={this.toggleDrawer} />
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={toastVisible}
-          autoHideDuration={3000}
-          onClose={() => {
-            this.setState({ toastVisible: false });
-          }}
-        >
-          <Alert variant="filled" severity="error">
-            {toastMessage}
-          </Alert>
-        </Snackbar>
       </React.Fragment>
     );
   }
 }
 
-export default IssueList;
+const IssueListWithToast = withToast(IssueList);
+IssueListWithToast.fetchData = IssueList.fetchData;
+
+export default withToast(IssueListWithToast);

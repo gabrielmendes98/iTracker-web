@@ -2,24 +2,14 @@ import React from 'react';
 import graphQLFetch from '../graphQLFetch';
 import { Link } from 'react-router-dom';
 
-import {
-  FormControl,
-  Card,
-  CardHeader,
-  CardContent,
-  Grid,
-  Select,
-  TextField,
-  Button,
-  Snackbar,
-  Drawer,
-} from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { FormControl, Card, CardHeader, CardContent, Grid, Select, TextField, Button, Drawer } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { withStyles } from '@material-ui/styles';
+import withToast from './withToast';
+import Alert from '@material-ui/lab/Alert';
 
 import store from '../store.js';
 
@@ -38,10 +28,7 @@ class IssueEdit extends React.Component {
     this.state = {
       issue,
       isFieldsValid: true,
-      updatedSuccessfully: false,
       drawer: true,
-      toastVisible: false,
-      toastMessage: '',
     };
   }
 
@@ -72,8 +59,8 @@ class IssueEdit extends React.Component {
   }
 
   loadData = async () => {
-    const { match } = this.props;
-    const data = await IssueEdit.fetchData(match, null, this.showError);
+    const { match, showError } = this.props;
+    const data = await IssueEdit.fetchData(match, null, showError);
     this.setState({ issue: data ? data.issue : {} });
   };
 
@@ -97,9 +84,7 @@ class IssueEdit extends React.Component {
     const form = document.forms.issueEdit;
     let isValid = true;
     [...form.elements].forEach((input) => {
-      if (input.getAttribute('aria-invalid') == true) {
-        console.log(input);
-        console.log(input.getAttribute('aria-invalid'));
+      if (input.getAttribute('aria-invalid') === 'true') {
         isValid = false;
       }
     });
@@ -107,7 +92,6 @@ class IssueEdit extends React.Component {
   };
 
   handleSubmit = async (e) => {
-    this.isAllFieldsValid(e);
     if (!this.isAllFieldsValid(e)) {
       this.setState({ isFieldsValid: false });
       return;
@@ -128,9 +112,11 @@ class IssueEdit extends React.Component {
     }`;
 
     const { id, created, ...changes } = issue;
-    const data = await graphQLFetch(query, { id, changes }, this.showError);
+    const { showSuccess, showError } = this.props;
+    const data = await graphQLFetch(query, { id, changes }, showError);
     if (data) {
-      this.setState({ issue: data.issueUpdate, isFieldsValid: true, updatedSuccessfully: true });
+      this.setState({ issue: data.issueUpdate, isFieldsValid: true });
+      showSuccess('Updated issue successfully');
     }
   };
 
@@ -143,16 +129,12 @@ class IssueEdit extends React.Component {
     this.setState({ drawer: open });
   };
 
-  showError = (message) => {
-    this.setState({ toastVisible: true, toastMessage: message });
-  };
-
   render() {
     const { issue } = this.state;
     if (issue === null) return null;
 
     const { id, title, status, owner, effort, description, created, due } = this.state.issue;
-    const { isFieldsValid, updatedSuccessfully, drawer, toastMessage, toastVisible } = this.state;
+    const { isFieldsValid, drawer } = this.state;
 
     const propsId = this.props.match.params.id;
     if (id === undefined) {
@@ -322,33 +304,12 @@ class IssueEdit extends React.Component {
             Next
           </Button>
         </div>
-        <Snackbar
-          open={updatedSuccessfully}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          autoHideDuration={3000}
-          onClose={() => {
-            this.setState({ updatedSuccessfully: false });
-          }}
-        >
-          <Alert variant="filled" severity="success">
-            Updated issue successfully
-          </Alert>
-        </Snackbar>
-        <Snackbar
-          open={toastVisible}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          autoHideDuration={3000}
-          onClose={() => {
-            this.setState({ toastVisible: false });
-          }}
-        >
-          <Alert variant="filled" severity="error">
-            {toastMessage}
-          </Alert>
-        </Snackbar>
       </StyledDrawer>
     );
   }
 }
 
-export default IssueEdit;
+const IssueEditWithToast = withToast(IssueEdit);
+IssueEditWithToast.fetchData = IssueEdit.fetchData;
+
+export default IssueEditWithToast;

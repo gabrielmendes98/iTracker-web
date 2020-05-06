@@ -12,13 +12,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import withToast from './withToast';
 
 class IssueAddNavItem extends React.Component {
   constructor() {
     super();
-    this.state = { open: false, toastVisible: false, toastMessage: '' };
+    this.state = { open: false };
   }
 
   handleSubmit = async (e) => {
@@ -36,19 +35,16 @@ class IssueAddNavItem extends React.Component {
       }
     }`;
 
-    const data = await graphQLFetch(query, { issue }, this.showError);
+    const { showError } = this.props;
+    const data = await graphQLFetch(query, { issue }, showError);
     if (data) {
       const { history } = this.props;
       history.push(`/edit/${data.issueAdd.id}`);
     }
   };
 
-  showError = (message) => {
-    this.setState({ toastVisible: true, toastMessage: message });
-  };
-
   render() {
-    const { open, toastVisible, toastMessage } = this.state;
+    const { open } = this.state;
     return (
       <div>
         <Tooltip title="Add issue">
@@ -75,21 +71,9 @@ class IssueAddNavItem extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <Snackbar
-          open={toastVisible}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          autoHideDuration={3000}
-          onClose={() => {
-            this.setState({ toastVisible: false });
-          }}
-        >
-          <Alert variant="filled" severity="error">
-            {toastMessage}
-          </Alert>
-        </Snackbar>
       </div>
     );
   }
 }
 
-export default withRouter(IssueAddNavItem);
+export default withToast(withRouter(IssueAddNavItem));

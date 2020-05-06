@@ -93,6 +93,7 @@ class IssueReport extends React.Component {
         {statuses.map((status) => (
           <TableCell key={status}>{counts[status]}</TableCell>
         ))}
+        <TableCell>{statuses.reduce((total, status) => total + counts[status], 0)}</TableCell>
       </TableRow>
     ));
 
@@ -105,6 +106,7 @@ class IssueReport extends React.Component {
               <TableRow>
                 <TableCell></TableCell>
                 {headerColumns}
+                <TableCell style={{ fontWeight: 'bold' }}>Total</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{statRows}</TableBody>

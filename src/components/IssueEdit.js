@@ -258,7 +258,7 @@ class IssueEdit extends React.Component {
                     <TextField
                       style={{ width: '100%' }}
                       name="description"
-                      value={description}
+                      value={description || ''}
                       onChange={this.onChange}
                       key={id}
                       rows={8}

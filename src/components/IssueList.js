@@ -157,7 +157,7 @@ class IssueList extends React.Component {
     const { selectedIssue } = this.state;
     return (
       <React.Fragment>
-        <IssueFilter />
+        <IssueFilter urlBase="/issues" />
         <IssueTable
           issues={issues}
           closeIssue={this.closeIssue}

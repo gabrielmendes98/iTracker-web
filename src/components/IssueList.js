@@ -8,8 +8,6 @@ import store from '../store.js';
 import withToast from './withToast';
 import PaginationLink from './PaginationLink';
 
-const SECTION_SIZE = 5;
-
 class IssueList extends React.Component {
   constructor() {
     super();

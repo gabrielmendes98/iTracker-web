@@ -7,6 +7,7 @@ import IssueDetail from './IssueDetail';
 import store from '../store.js';
 import withToast from './withToast';
 import PaginationLink from './PaginationLink';
+import Button from '@material-ui/core/Button';
 
 class IssueList extends React.Component {
   constructor() {
@@ -130,6 +131,19 @@ class IssueList extends React.Component {
     }
   };
 
+  restoreIssue = async (id) => {
+    const query = `mutation issueRestore($id: Int!) {
+      issueRestore(id: $id)
+    }`;
+
+    const { showSuccess, showError } = this.props;
+    const data = await graphQLFetch(query, { id }, showError);
+    if (data) {
+      showSuccess(`Issue ${id} restored successfully.`);
+      this.loadData();
+    }
+  };
+
   deleteIssue = async (index) => {
     const query = `mutation issueDelete($id: Int!) {
       issueDelete(id: $id)
@@ -151,7 +165,19 @@ class IssueList extends React.Component {
         newList.splice(index, 1);
         return { issues: newList };
       });
-      showSuccess(`Deleted issue ${id} successfully.`);
+      const undoMessage = (
+        <>
+          {`Deleted issue ${id} successfully.`}
+          <Button
+            size="small"
+            style={{ marginLeft: 20, color: 'black', fontWeight: 'bold', padding: 0 }}
+            onClick={() => this.restoreIssue(id)}
+          >
+            Undo
+          </Button>
+        </>
+      );
+      showSuccess(undoMessage);
     } else {
       this.loadData();
     }

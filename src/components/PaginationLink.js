@@ -1,10 +1,10 @@
 import React from 'react';
-import { MemoryRouter, Route } from 'react-router';
+import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 
-export default function PaginationLink() {
+export default function PaginationLink({ pages }) {
   return (
     <Route>
       {({ location }) => {
@@ -13,7 +13,7 @@ export default function PaginationLink() {
         return (
           <Pagination
             page={page}
-            count={10}
+            count={pages}
             renderItem={(item) => {
               item.page === 1 ? query.delete('page') : query.set('page', item.page);
               return <PaginationItem component={Link} to={{ search: `?${query.toString()}` }} {...item} />;

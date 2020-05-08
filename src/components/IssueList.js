@@ -13,10 +13,14 @@ const SECTION_SIZE = 5;
 class IssueList extends React.Component {
   constructor() {
     super();
-    const issues = store.initialData ? store.initialData.issueList.issues : null;
-    const selectedIssue = store.initialData ? store.initialData.issue : null;
+    const initialData = store.initialData || { issueList: { issues: null, pages: null }, issue: {} };
+    const {
+      issueList: { issues, pages },
+      issue: selectedIssue,
+    } = initialData;
+
     delete store.initialData;
-    this.state = { issues, selectedIssue };
+    this.state = { issues, selectedIssue, pages };
   }
 
   componentDidMount() {
@@ -102,7 +106,7 @@ class IssueList extends React.Component {
     } = this.props;
     const data = await IssueList.fetchData(match, search, showError);
     if (data) {
-      this.setState({ issues: data.issueList.issues, selectedIssue: data.issue });
+      this.setState({ issues: data.issueList.issues, selectedIssue: data.issue, pages: data.issueList.pages });
     }
   };
 
@@ -166,7 +170,7 @@ class IssueList extends React.Component {
   render() {
     const { issues } = this.state;
     if (issues === null) return null;
-    const { selectedIssue } = this.state;
+    const { selectedIssue, pages } = this.state;
     return (
       <React.Fragment>
         <IssueFilter urlBase="/issues" />
@@ -176,7 +180,7 @@ class IssueList extends React.Component {
           deleteIssue={this.deleteIssue}
           style={{ marginTop: 20, marginBottom: 20 }}
         />
-        <PaginationLink />
+        <PaginationLink pages={pages} />
         <IssueDetail issue={selectedIssue} drawer={true} toggleDrawer={this.toggleDrawer} />
       </React.Fragment>
     );
@@ -186,4 +190,4 @@ class IssueList extends React.Component {
 const IssueListWithToast = withToast(IssueList);
 IssueListWithToast.fetchData = IssueList.fetchData;
 
-export default withToast(IssueListWithToast);
+export default IssueListWithToast;

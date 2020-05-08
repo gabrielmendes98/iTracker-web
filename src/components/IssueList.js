@@ -6,6 +6,9 @@ import URLSearchParams from 'url-search-params';
 import IssueDetail from './IssueDetail';
 import store from '../store.js';
 import withToast from './withToast';
+import PaginationLink from './PaginationLink';
+
+const SECTION_SIZE = 5;
 
 class IssueList extends React.Component {
   constructor() {
@@ -58,17 +61,23 @@ class IssueList extends React.Component {
       vars.selectedId = idInt;
     }
 
+    let page = parseInt(params.get('page'), 10);
+    if (Number.isNaN(page)) page = 1;
+    vars.page = page;
+
     const query = `query issueList(
       $status: StatusType
       $effortMin: Int
       $effortMax: Int
       $hasSelection: Boolean!
       $selectedId: Int!
+      $page: Int
     ) {
       issueList(
         status: $status
         effortMin: $effortMin
         effortMax: $effortMax
+        page: $page
       ) {
         issues { 
           id title status owner
@@ -167,6 +176,7 @@ class IssueList extends React.Component {
           deleteIssue={this.deleteIssue}
           style={{ marginTop: 20, marginBottom: 20 }}
         />
+        <PaginationLink />
         <IssueDetail issue={selectedIssue} drawer={true} toggleDrawer={this.toggleDrawer} />
       </React.Fragment>
     );

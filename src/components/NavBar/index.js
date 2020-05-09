@@ -14,6 +14,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
+import Search from '../Search';
 
 const MenuGrow = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -65,7 +66,9 @@ class NavBar extends React.Component {
               Report
             </Button>
           </div>
-
+          <div style={{ width: 250 }}>
+            <Search />
+          </div>
           <IssueAddNavItem />
           <MenuGrow />
         </Toolbar>

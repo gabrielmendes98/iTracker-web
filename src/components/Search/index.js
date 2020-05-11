@@ -2,12 +2,19 @@ import React from 'react';
 import SelectAsync from 'react-select/async';
 import { withRouter } from 'react-router-dom';
 
-import grapQLFetch from '../graphQLFetch';
-import withToast from './withToast';
+import grapQLFetch from '../../graphQLFetch';
+import withToast from '../withToast';
+
+import './styles.css';
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { ready: false };
+  }
+
+  componentDidMount() {
+    this.setState({ ready: true }); // This one.
   }
 
   onChangeSelection = ({ value }) => {
@@ -32,16 +39,24 @@ class Search extends React.Component {
   };
 
   render() {
-    return (
-      <SelectAsync
-        instanceId="search-select"
-        value=""
-        loadOptions={this.loadOptions}
-        filterOption={() => true}
-        onChange={this.onChangeSelection}
-        components={{ DropdownIndicator: null }}
-      />
-    );
+    if (this.state.ready) {
+      return (
+        <SelectAsync
+          styles={{
+            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+            menu: (provided) => ({ ...provided, zIndex: '9999 !important' }),
+          }}
+          menuPortalTarget={document.querySelector('body')}
+          instanceId="search-select"
+          value=""
+          loadOptions={this.loadOptions}
+          filterOption={() => true}
+          onChange={this.onChangeSelection}
+          components={{ DropdownIndicator: null }}
+        />
+      );
+    }
+    return <div></div>;
   }
 }
 

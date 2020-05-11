@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.css';
 import { NavLink, Link } from 'react-router-dom';
 import IssueAddNavItem from '../IssueAddNavItem';
+import SignInNavItem from '../SignInNavItem';
 
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -71,6 +72,7 @@ class NavBar extends React.Component {
           </div>
           <IssueAddNavItem />
           <MenuGrow />
+          <SignInNavItem />
         </Toolbar>
       </AppBar>
     );

@@ -13,6 +13,10 @@ const browserConfig = {
   module: {
     rules: [
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'file-loader',
+      },
+      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
@@ -69,6 +73,10 @@ const serverConfig = {
   },
   module: {
     rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'file-loader',
+      },
       {
         test: /\.jsx?$/,
         use: {

@@ -7,6 +7,8 @@ export default function template(body, data) {
   <meta charset="utf-8">
   <title>Issue Tracker | MERN stack</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 </head>
 <body>
   <!-- Page generated from template. -->

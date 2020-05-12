@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import googleIcon from '../../assets/search.png';
+import withToast from './withToast';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +8,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Paper from '@material-ui/core/Paper';
-import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -17,10 +18,33 @@ import MenuList from '@material-ui/core/MenuList';
 class SignInNavItem extends Component {
   constructor() {
     super();
-    this.state = { modalOpen: false, anchorEl: null, user: { signedIn: false, givenName: '' } };
+    this.state = {
+      modalOpen: false,
+      anchorEl: null,
+      user: { signedIn: false, givenName: '', imageURL: '' },
+      disabled: false,
+    };
+  }
+
+  componentDidMount() {
+    const clientId = window.ENV.GOOGLE_CLIENT_ID;
+    if (!clientId) return;
+    window.gapi.load('auth2', () => {
+      if (!window.gapi.auth2.getAuthInstance()) {
+        window.gapi.auth2.init({ client_id: clientId }).then(() => {
+          this.setState({ disabled: false });
+        });
+      }
+    });
   }
 
   showModal = () => {
+    const clientId = window.ENV.GOOGLE_CLIENT_ID;
+    const { showError } = this.props;
+    if (!clientId) {
+      showError('Missing environment variable GOOGLE_CLIENT_ID');
+      return;
+    }
     this.setState({ modalOpen: true });
   };
 
@@ -36,13 +60,22 @@ class SignInNavItem extends Component {
     this.setState({ anchorEl: null });
   };
 
-  signIn = () => {
+  signIn = async () => {
     this.hideModal();
-    this.setState({ user: { signedIn: true, givenName: 'User1' } });
+    const { showError } = this.props;
+    try {
+      const auth2 = window.gapi.auth2.getAuthInstance();
+      const googleUser = await auth2.signIn();
+      const givenName = googleUser.getBasicProfile().getGivenName();
+      const imageURL = googleUser.getBasicProfile().getImageUrl();
+      this.setState({ user: { signedIn: true, givenName, imageURL } });
+    } catch (error) {
+      showError(`Error authenticating with Google: ${error.error}`);
+    }
   };
 
   signOut = () => {
-    this.setState({ user: { signedIn: false, givenName: '' } });
+    this.setState({ user: { signedIn: false, givenName: '', imageURL: '' } });
     this.setState({ anchorEl: null });
   };
 
@@ -52,13 +85,14 @@ class SignInNavItem extends Component {
       return (
         <>
           <Button
-            style={{ borderColor: 'white', color: 'white', textTransform: 'none' }}
+            style={{ color: 'white', textTransform: 'none', border: 'none' }}
             variant="outlined"
             type="button"
             onClick={this.showPopover}
           >
             {user.givenName}
           </Button>
+          <Avatar alt={user.givenName} src={user.imageURL} onClick={this.showPopover} style={{ cursor: 'pointer' }} />
           <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} role={undefined} transition>
             {({ TransitionProps, placement }) => (
               <Grow {...TransitionProps} style={{ transformOrigin: 'center bottom' }}>
@@ -76,7 +110,7 @@ class SignInNavItem extends Component {
       );
     }
 
-    const { modalOpen } = this.state;
+    const { modalOpen, disabled } = this.state;
     return (
       <>
         <Button
@@ -94,6 +128,7 @@ class SignInNavItem extends Component {
               variant="contained"
               style={{ backgroundColor: 'red', color: 'white', textTransform: 'none', width: '100%' }}
               onClick={this.signIn}
+              disabled={disabled}
             >
               <div style={{ width: '40%' }}>
                 <Paper
@@ -124,4 +159,4 @@ class SignInNavItem extends Component {
   }
 }
 
-export default SignInNavItem;
+export default withToast(SignInNavItem);

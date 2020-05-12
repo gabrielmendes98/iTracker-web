@@ -16,13 +16,12 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
 class SignInNavItem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       modalOpen: false,
       anchorEl: null,
       user: { signedIn: false, givenName: '', picture: '' },
-      disabled: false,
     };
   }
 
@@ -86,9 +85,19 @@ class SignInNavItem extends Component {
     }
   };
 
-  signOut = () => {
-    this.setState({ user: { signedIn: false, givenName: '', picture: '' } });
-    this.setState({ anchorEl: null });
+  signOut = async () => {
+    const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
+    const { showError } = this.props;
+    try {
+      await fetch(`${apiEndpoint}/signout`, {
+        method: 'POST',
+      });
+      const auth2 = window.gapi.auth2.getAuthInstance();
+      await auth2.signOut();
+      this.setState({ user: { signedIn: false, givenName: '' } });
+    } catch (error) {
+      showError(`Error signing out: ${error}`);
+    }
   };
 
   render() {
@@ -122,7 +131,7 @@ class SignInNavItem extends Component {
       );
     }
 
-    const { modalOpen, disabled } = this.state;
+    const { modalOpen } = this.state;
     return (
       <>
         <Button
@@ -140,7 +149,6 @@ class SignInNavItem extends Component {
               variant="contained"
               style={{ backgroundColor: 'red', color: 'white', textTransform: 'none', width: '100%' }}
               onClick={this.signIn}
-              disabled={disabled}
             >
               <div style={{ width: '40%' }}>
                 <Paper

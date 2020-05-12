@@ -17,7 +17,7 @@ export default function template(body, data) {
     function start() {
       gapi.load('auth2', function() {
         auth2 = gapi.auth2.init({
-          client_id: ${process.env.GOOGLE_CLIENT_ID},
+          client_id: '${process.env.GOOGLE_CLIENT_ID}',
         });
       });
     }

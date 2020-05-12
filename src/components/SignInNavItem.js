@@ -26,25 +26,22 @@ class SignInNavItem extends Component {
     };
   }
 
-  componentDidMount() {
-    const clientId = window.ENV.GOOGLE_CLIENT_ID;
-    if (!clientId) return;
-    window.gapi.load('auth2', () => {
-      if (!window.gapi.auth2.getAuthInstance()) {
-        window.gapi.auth2.init({ client_id: clientId }).then(() => {
-          this.setState({ disabled: false });
-        });
-      }
+  loadData = async () => {
+    const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
+    const response = await fetch(`${apiEndpoint}/user`, {
+      method: 'POST',
     });
+    const body = await response.text();
+    const result = JSON.parse(body);
+    const { signedIn, givenName, picture } = result;
+    this.setState({ user: { signedIn, givenName, picture } });
+  };
+
+  async componentDidMount() {
+    await this.loadData();
   }
 
   showModal = () => {
-    const clientId = window.ENV.GOOGLE_CLIENT_ID;
-    const { showError } = this.props;
-    if (!clientId) {
-      showError('Missing environment variable GOOGLE_CLIENT_ID');
-      return;
-    }
     this.setState({ modalOpen: true });
   };
 
@@ -69,7 +66,7 @@ class SignInNavItem extends Component {
       const googleUser = await auth2.signIn();
       googleToken = googleUser.getAuthResponse().id_token;
     } catch (error) {
-      showError(`Error authenticating with Google: ${error.error}`);
+      showError(`Error authenticating with Google: ${error}`);
     }
 
     try {

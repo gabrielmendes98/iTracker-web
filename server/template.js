@@ -1,4 +1,6 @@
 import serialize from 'serialize-javascript';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default function template(body, data) {
   return `<!DOCTYPE HTML>
@@ -7,8 +9,19 @@ export default function template(body, data) {
   <meta charset="utf-8">
   <title>Issue Tracker | MERN stack</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+  </script>
+  <script>
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: ${process.env.GOOGLE_CLIENT_ID},
+        });
+      });
+    }
+  </script>
 </head>
 <body>
   <!-- Page generated from template. -->

@@ -28,7 +28,6 @@ if (enableHMR && process.env.NODE_ENV !== 'production') {
 
 app.use(express.static('public'));
 
-const url = process.env.UI_SERVER_URL || 'http://localhost';
 const port = process.env.UI_SERVER_PORT || 8000;
 
 if (!process.env.UI_API_ENDPOINT) {
@@ -39,13 +38,22 @@ if (!process.env.UI_SERVER_API_ENDPOINT) {
   process.env.UI_SERVER_API_ENDPOINT = process.env.UI_API_ENDPOINT;
 }
 
+if (!process.env.UI_AUTH_ENDPOINT) {
+  process.env.UI_AUTH_ENDPOINT = 'http://localhost:3000/auth';
+}
+
 const apiProxyTarget = process.env.API_PROXY_TARGET;
 if (apiProxyTarget) {
   app.use('/graphql', createProxyMiddleware({ target: apiProxyTarget }));
+  app.use('/auth', createProxyMiddleware({ target: apiProxyTarget }));
 }
 
 app.get('/env.js', (req, res) => {
-  const env = { UI_API_ENDPOINT: process.env.UI_API_ENDPOINT, GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID };
+  const env = {
+    UI_API_ENDPOINT: process.env.UI_API_ENDPOINT,
+    UI_AUTH_ENDPOINT: process.env.UI_AUTH_ENDPOINT,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  };
   res.send(`window.ENV = ${JSON.stringify(env)}`);
 });
 
@@ -54,7 +62,7 @@ app.get('*', (req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`UI server listening on ${url}:${port}`);
+  console.log(`UI server listening on http://localhost:${port}`);
 });
 
 if (module.hot) {

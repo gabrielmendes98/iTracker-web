@@ -21,7 +21,7 @@ class SignInNavItem extends Component {
     this.state = {
       modalOpen: false,
       anchorEl: null,
-      user: { signedIn: false, givenName: '', imageURL: '' },
+      user: { signedIn: false, givenName: '', picture: '' },
       disabled: false,
     };
   }
@@ -63,19 +63,34 @@ class SignInNavItem extends Component {
   signIn = async () => {
     this.hideModal();
     const { showError } = this.props;
+    let googleToken;
     try {
       const auth2 = window.gapi.auth2.getAuthInstance();
       const googleUser = await auth2.signIn();
-      const givenName = googleUser.getBasicProfile().getGivenName();
-      const imageURL = googleUser.getBasicProfile().getImageUrl();
-      this.setState({ user: { signedIn: true, givenName, imageURL } });
+      googleToken = googleUser.getAuthResponse().id_token;
     } catch (error) {
       showError(`Error authenticating with Google: ${error.error}`);
+    }
+
+    try {
+      const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
+      const response = await fetch(`${apiEndpoint}/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ google_token: googleToken }),
+      });
+      const body = await response.text();
+      const result = JSON.parse(body);
+      const { signedIn, givenName, picture } = result;
+
+      this.setState({ user: { signedIn, givenName, picture } });
+    } catch (error) {
+      showError(`Error signing into the app: ${error}`);
     }
   };
 
   signOut = () => {
-    this.setState({ user: { signedIn: false, givenName: '', imageURL: '' } });
+    this.setState({ user: { signedIn: false, givenName: '', picture: '' } });
     this.setState({ anchorEl: null });
   };
 
@@ -92,7 +107,7 @@ class SignInNavItem extends Component {
           >
             {user.givenName}
           </Button>
-          <Avatar alt={user.givenName} src={user.imageURL} onClick={this.showPopover} style={{ cursor: 'pointer' }} />
+          <Avatar alt={user.givenName} src={user.picture} onClick={this.showPopover} style={{ cursor: 'pointer' }} />
           <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} role={undefined} transition>
             {({ TransitionProps, placement }) => (
               <Grow {...TransitionProps} style={{ transformOrigin: 'center bottom' }}>

@@ -15,8 +15,8 @@ import AddIcon from '@material-ui/icons/Add';
 import withToast from './withToast';
 
 class IssueAddNavItem extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { open: false };
   }
 
@@ -45,12 +45,17 @@ class IssueAddNavItem extends React.Component {
 
   render() {
     const { open } = this.state;
+    const {
+      user: { signedIn },
+    } = this.props;
     return (
       <div>
         <Tooltip title="Add issue">
-          <IconButton color="inherit" onClick={() => this.setState({ open: true })}>
-            <AddIcon />
-          </IconButton>
+          <span>
+            <IconButton color="inherit" onClick={() => this.setState({ open: true })} disabled={!signedIn}>
+              <AddIcon />
+            </IconButton>
+          </span>
         </Tooltip>
 
         <Dialog open={open} onClose={() => this.setState({ open: false })}>

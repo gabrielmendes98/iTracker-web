@@ -21,23 +21,7 @@ class SignInNavItem extends Component {
     this.state = {
       modalOpen: false,
       anchorEl: null,
-      user: { signedIn: false, givenName: '', picture: '' },
     };
-  }
-
-  loadData = async () => {
-    const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
-    const response = await fetch(`${apiEndpoint}/user`, {
-      method: 'POST',
-    });
-    const body = await response.text();
-    const result = JSON.parse(body);
-    const { signedIn, givenName, picture } = result;
-    this.setState({ user: { signedIn, givenName, picture } });
-  };
-
-  async componentDidMount() {
-    await this.loadData();
   }
 
   showModal = () => {
@@ -79,7 +63,8 @@ class SignInNavItem extends Component {
       const result = JSON.parse(body);
       const { signedIn, givenName, picture } = result;
 
-      this.setState({ user: { signedIn, givenName, picture } });
+      const { onUserChange } = this.props;
+      onUserChange({ signedIn, givenName, picture });
     } catch (error) {
       showError(`Error signing into the app: ${error}`);
     }
@@ -94,14 +79,16 @@ class SignInNavItem extends Component {
       });
       const auth2 = window.gapi.auth2.getAuthInstance();
       await auth2.signOut();
-      this.setState({ user: { signedIn: false, givenName: '' } });
+      const { onUserChange } = this.props;
+      onUserChange({ signedIn: false, givenName: '', picture: '' });
     } catch (error) {
       showError(`Error signing out: ${error}`);
     }
   };
 
   render() {
-    const { user, anchorEl } = this.state;
+    const { anchorEl } = this.state;
+    const { user } = this.props;
     if (user.signedIn) {
       return (
         <>

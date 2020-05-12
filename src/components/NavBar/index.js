@@ -42,41 +42,31 @@ const MenuGrow = () => {
   );
 };
 
-class NavBar extends React.Component {
-  state = {
-    value: 0,
-  };
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-  render() {
-    return (
-      <AppBar id="app-bar" position="static">
-        <Toolbar>
-          <div style={{ display: 'flex', flex: 1 }}>
-            <Box mr={5}>
-              <Typography variant="h6">Issue Tracker</Typography>
-            </Box>
-            <Button color="inherit" exact to="/" component={NavLink}>
-              Home
-            </Button>
-            <Button color="inherit" to="/issues" component={NavLink}>
-              Issue List
-            </Button>
-            <Button color="inherit" to="/report" component={NavLink}>
-              Report
-            </Button>
-          </div>
-          <div style={{ width: 250 }}>
-            <Search />
-          </div>
-          <IssueAddNavItem />
-          <MenuGrow />
-          <SignInNavItem />
-        </Toolbar>
-      </AppBar>
-    );
-  }
-}
+const NavBar = ({ user, onUserChange }) => (
+  <AppBar id="app-bar" position="static">
+    <Toolbar>
+      <div style={{ display: 'flex', flex: 1 }}>
+        <Box mr={5}>
+          <Typography variant="h6">Issue Tracker</Typography>
+        </Box>
+        <Button color="inherit" exact to="/" component={NavLink}>
+          Home
+        </Button>
+        <Button color="inherit" to="/issues" component={NavLink}>
+          Issue List
+        </Button>
+        <Button color="inherit" to="/report" component={NavLink}>
+          Report
+        </Button>
+      </div>
+      <div style={{ width: 250 }}>
+        <Search />
+      </div>
+      <IssueAddNavItem user={user} />
+      <MenuGrow />
+      <SignInNavItem user={user} onUserChange={onUserChange} />
+    </Toolbar>
+  </AppBar>
+);
 
 export default NavBar;

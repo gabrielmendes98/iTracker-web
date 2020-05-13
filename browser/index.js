@@ -5,8 +5,9 @@ import App from '../src/App';
 import { BrowserRouter } from 'react-router-dom';
 import store from '../src/store';
 
-// eslint-disable-next-line no-underscore-dangle
+/* eslint-disable no-underscore-dangle */
 store.initialData = window.__INITIAL_DATA__;
+store.userData = window.__USER_DATA__;
 
 ReactDOM.hydrate(
   <React.StrictMode>

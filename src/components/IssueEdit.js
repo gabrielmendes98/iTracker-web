@@ -1,6 +1,7 @@
 import React from 'react';
 import graphQLFetch from '../graphQLFetch';
 import { Link } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 import { FormControl, Card, CardHeader, CardContent, Grid, Select, TextField, Button, Drawer } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -157,6 +158,8 @@ class IssueEdit extends React.Component {
       );
     }
 
+    const user = this.context;
+
     return (
       <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
         <Card style={{ margin: 20, width: '94%' }}>
@@ -269,7 +272,7 @@ class IssueEdit extends React.Component {
                   </Grid>
                   <Grid item xs={3}></Grid>
                   <Grid item xs={2}>
-                    <Button variant="contained" type="submit" style={{ backgroundColor: '#388E3C', color: '#fff' }}>
+                    <Button disabled={!user.signedIn} variant="contained" type="submit" color="primary">
                       Submit
                     </Button>
                   </Grid>
@@ -308,6 +311,8 @@ class IssueEdit extends React.Component {
     );
   }
 }
+
+IssueEdit.contextType = UserContext;
 
 const IssueEditWithToast = withToast(IssueEdit);
 IssueEditWithToast.fetchData = IssueEdit.fetchData;

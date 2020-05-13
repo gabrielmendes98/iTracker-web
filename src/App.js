@@ -2,6 +2,7 @@ import React from 'react';
 import Routes from './router';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import UserContext from './UserContext';
 import './styles.css';
 
 class App extends React.Component {
@@ -33,7 +34,9 @@ class App extends React.Component {
         <div id="main">
           <NavBar user={user} onUserChange={this.onUserChange} />
           <div id="page-content">
-            <Routes />
+            <UserContext.Provider value={user}>
+              <Routes />
+            </UserContext.Provider>
           </div>
         </div>
         <Footer />

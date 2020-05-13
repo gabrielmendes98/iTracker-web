@@ -1,13 +1,12 @@
 import React from 'react';
-
 import { Link, withRouter } from 'react-router-dom';
+import UserContext from '../UserContext';
+
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
-
 import { green, red } from '@material-ui/core/colors';
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,6 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 
 import { withStyles } from '@material-ui/core/styles';
+
 const StyledTableCell = withStyles(() => ({
   head: {
     fontWeight: 'bold',
@@ -30,57 +30,91 @@ const StyledTableRow = withStyles(() => ({
   },
 }))(TableRow);
 
-const IssueRow = withRouter(({ issue, location: { search }, closeIssue, deleteIssue, index, history }) => {
-  const { id, status, owner, effort, created, due, title } = issue;
-  const selectLocation = { pathname: `/issues/${id}`, search };
+const StyledIconButtonClose = withStyles(() => ({
+  root: {
+    color: green[500],
+  },
+}))(IconButton);
 
-  const handlePropagation = (e) => {
-    e.stopPropagation();
-  };
+const StyledIconButtonDelete = withStyles(() => ({
+  root: {
+    color: red[500],
+  },
+}))(IconButton);
 
-  return (
-    <StyledTableRow
-      onClick={() => {
-        history.push(selectLocation);
-      }}
-    >
-      <TableCell>{id}</TableCell>
-      <TableCell>{status}</TableCell>
-      <TableCell>{owner}</TableCell>
-      <TableCell>{effort}</TableCell>
-      <TableCell>{created.toDateString()}</TableCell>
-      <TableCell>{due ? due.toDateString() : ' '}</TableCell>
-      <TableCell>{title}</TableCell>
-      <TableCell align="right" onClick={handlePropagation}>
-        <Tooltip title="Edit issue">
-          <IconButton to={`/edit/${id}`} component={Link}>
-            <EditIcon style={{ color: '#000' }} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Close issue">
-          <IconButton
-            type="button"
-            onClick={() => {
-              closeIssue(index);
-            }}
-          >
-            <CheckCircleIcon style={{ color: green[500] }} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete issue">
-          <IconButton
-            type="button"
-            onClick={() => {
-              deleteIssue(index);
-            }}
-          >
-            <DeleteIcon style={{ color: red[500] }} />
-          </IconButton>
-        </Tooltip>
-      </TableCell>
-    </StyledTableRow>
-  );
-});
+class IssueRowPlain extends React.Component {
+  render() {
+    const {
+      issue,
+      location: { search },
+      closeIssue,
+      deleteIssue,
+      index,
+      history,
+    } = this.props;
+    const { id, status, owner, effort, created, due, title } = issue;
+    const selectLocation = { pathname: `/issues/${id}`, search };
+    const user = this.context;
+    const disabled = !user.signedIn;
+
+    const handlePropagation = (e) => {
+      e.stopPropagation();
+    };
+
+    return (
+      <StyledTableRow
+        onClick={() => {
+          history.push(selectLocation);
+        }}
+      >
+        <TableCell>{id}</TableCell>
+        <TableCell>{status}</TableCell>
+        <TableCell>{owner}</TableCell>
+        <TableCell>{effort}</TableCell>
+        <TableCell>{created.toDateString()}</TableCell>
+        <TableCell>{due ? due.toDateString() : ' '}</TableCell>
+        <TableCell>{title}</TableCell>
+        <TableCell align="right" onClick={handlePropagation}>
+          <Tooltip title="Edit issue">
+            <IconButton to={`/edit/${id}`} component={Link}>
+              <EditIcon style={{ color: '#000' }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Close issue">
+            <span>
+              <StyledIconButtonClose
+                disabled={disabled}
+                type="button"
+                onClick={() => {
+                  closeIssue(index);
+                }}
+              >
+                <CheckCircleIcon />
+              </StyledIconButtonClose>
+            </span>
+          </Tooltip>
+          <Tooltip title="Delete issue">
+            <span>
+              <StyledIconButtonDelete
+                disabled={disabled}
+                type="button"
+                onClick={() => {
+                  deleteIssue(index);
+                }}
+              >
+                <DeleteIcon />
+              </StyledIconButtonDelete>
+            </span>
+          </Tooltip>
+        </TableCell>
+      </StyledTableRow>
+    );
+  }
+}
+
+IssueRowPlain.contextType = UserContext;
+const IssueRow = withRouter(IssueRowPlain);
+delete IssueRow.contextType;
 
 const IssueTable = ({ issues, closeIssue, deleteIssue, style }) => {
   const issueRows = issues.map((issue, index) => (

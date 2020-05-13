@@ -16,6 +16,7 @@ class App extends React.Component {
     const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
     const response = await fetch(`${apiEndpoint}/user`, {
       method: 'POST',
+      credentials: 'include',
     });
     const body = await response.text();
     const result = JSON.parse(body);

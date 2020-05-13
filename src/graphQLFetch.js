@@ -14,6 +14,7 @@ async function graphQLFetch(query, variables = {}, showError = null) {
   try {
     const response = await fetch(apiEndpoint, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables }),
     });

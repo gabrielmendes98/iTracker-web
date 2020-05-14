@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "This is the code for the issue tracker ui server and interface",
   "main": "index.js",
+  "engines": {
+    "node": "12.x",
+    "npm": "6.x"
+  },
   "scripts": {
     "#start": "UI server. HMR is enabled in dev mode.",
     "start": "node dist/server.js",

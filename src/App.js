@@ -18,7 +18,7 @@ class App extends React.Component {
   async componentDidMount() {
     this.setState({ ready: true });
     const { user } = this.state;
-    if (user === null) {
+    if (user == null) {
       const data = await App.fetchData();
       this.setState({ user: data.user });
     }
@@ -38,7 +38,7 @@ class App extends React.Component {
 
   render() {
     const { user } = this.state;
-    if (user === null) return null;
+    if (user == null) return null;
     return (
       <div style={{ visibility: this.state.ready ? 'visible' : 'hidden' }}>
         <div id="main">

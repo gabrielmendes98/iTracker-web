@@ -63,8 +63,8 @@ class IssueAddNavItem extends React.Component {
           <DialogContent>
             <DialogContentText>To add an issue, please fill the form.</DialogContentText>
             <form id="issueAdd" name="issueAdd" onSubmit={this.handleSubmit}>
-              <TextField autoFocus margin="dense" type="text" name="owner" label="Title" fullWidth />
-              <TextField margin="dense" type="text" name="title" label="Owner" fullWidth />
+              <TextField autoFocus margin="dense" type="text" name="title" label="Title" fullWidth />
+              <TextField margin="dense" type="text" name="owner" label="Owner" fullWidth />
             </form>
           </DialogContent>
           <DialogActions>

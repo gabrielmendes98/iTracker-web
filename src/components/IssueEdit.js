@@ -55,7 +55,8 @@ class IssueEdit extends React.Component {
     const {
       params: { id },
     } = match;
-    const result = await graphQLFetch(query, { id }, showError);
+    const intId = parseInt(id, 10);
+    const result = await graphQLFetch(query, { id: intId }, showError);
     return result;
   }
 

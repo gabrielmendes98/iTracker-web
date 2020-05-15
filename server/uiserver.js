@@ -44,8 +44,8 @@ if (!process.env.UI_AUTH_ENDPOINT) {
 
 const apiProxyTarget = process.env.API_PROXY_TARGET;
 if (apiProxyTarget) {
-  app.use('/graphql', createProxyMiddleware({ target: apiProxyTarget }));
-  app.use('/auth', createProxyMiddleware({ target: apiProxyTarget }));
+  app.use('/graphql', createProxyMiddleware({ target: apiProxyTarget, changeOrigin: true }));
+  app.use('/auth', createProxyMiddleware({ target: apiProxyTarget, changeOrigin: true }));
 }
 
 app.get('/env.js', (req, res) => {

@@ -49,7 +49,7 @@ class SignInNavItem extends Component {
       const googleUser = await auth2.signIn();
       googleToken = googleUser.getAuthResponse().id_token;
     } catch (error) {
-      showError(`Error authenticating with Google: ${error}`);
+      showError(`Error authenticating with Google: ${error.error}`);
     }
 
     try {

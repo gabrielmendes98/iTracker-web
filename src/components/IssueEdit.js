@@ -115,7 +115,8 @@ class IssueEdit extends React.Component {
 
     const { id, created, ...changes } = issue;
     const { showSuccess, showError } = this.props;
-    const data = await graphQLFetch(query, { id, changes }, showError);
+    const intId = parseInt(id, 10);
+    const data = await graphQLFetch(query, { id: intId, changes }, showError);
     if (data) {
       this.setState({ issue: data.issueUpdate, isFieldsValid: true });
       showSuccess('Updated issue successfully');

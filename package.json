@@ -17,7 +17,8 @@
     "#watch-server-hmr": "Recompile server HMR bundle on changes.",
     "watch-server-hmr": "webpack -w --config webpack.serverHMR.js",
     "#dev-all": "Dev mode: watch for server changes and start UI server. Works on Linux and Mac",
-    "dev-all": "rm dist/* && npm run watch-server-hmr & sleep 5 && npm start"
+    "dev-all": "rm dist/* && npm run watch-server-hmr & sleep 5 && npm start",
+    "publishheroku": "cd ../ && git subtree push --prefix ui heroku-ui master || true"
   },
   "repository": {
     "type": "git",

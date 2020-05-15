@@ -115,6 +115,7 @@ class IssueEdit extends React.Component {
 
     const { id, created, ...changes } = issue;
     const { showSuccess, showError } = this.props;
+    changes.effort = parseInt(changes.effort, 10);
     const intId = parseInt(id, 10);
     const data = await graphQLFetch(query, { id: intId, changes }, showError);
     if (data) {

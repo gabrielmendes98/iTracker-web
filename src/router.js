@@ -4,7 +4,6 @@ import routes from './routes.js';
 
 const Routes = () => (
   <Switch>
-    <Redirect exact from="/" to="/issues" />
     {routes.map((attrs) => (
       <Route {...attrs} key={attrs.path} />
     ))}

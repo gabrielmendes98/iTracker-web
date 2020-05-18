@@ -8,13 +8,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Tooltip from '@material-ui/core/Tooltip';
 import Search from '../Search';
 
 const MenuGrow = () => {
@@ -46,9 +42,9 @@ const NavBar = ({ user, onUserChange }) => (
   <AppBar id="app-bar" position="static">
     <Toolbar>
       <div style={{ display: 'flex', flex: 1 }}>
-        <Box mr={5}>
-          <Typography variant="h6">Issue Tracker</Typography>
-        </Box>
+        <Typography style={{ marginRight: 20 }} variant="h6">
+          Issue Tracker
+        </Typography>
         <Button color="inherit" exact to="/" component={NavLink}>
           Home
         </Button>

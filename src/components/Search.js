@@ -44,6 +44,7 @@ class Search extends React.Component {
             menuPortal: (base) => ({ ...base, zIndex: 9999 }),
             menu: (provided) => ({ ...provided, zIndex: '9999 !important' }),
           }}
+          placeholder="Search..."
           menuPortalTarget={document.querySelector('body')}
           instanceId="search-select"
           value=""

@@ -20,6 +20,6 @@ export default class StatusBullet extends Component {
         break;
     }
 
-    return <span style={{ color: color, fontSize: 20, height: '16px' }}>&#8226;</span>;
+    return <span style={{ color: 'white', backgroundColor: color, borderRadius: '5px', padding: 5 }}>{status}</span>;
   }
 }

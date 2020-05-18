@@ -187,8 +187,11 @@ class IssueList extends React.Component {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
+    const {
+      location: { search },
+    } = this.props;
     const { history } = this.props;
-    history.push('/issues');
+    history.push({ pathname: '/issues', search });
   };
 
   render() {

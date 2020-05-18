@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import UserContext from '../UserContext';
+import StatusBullet from './StatusBullet';
 
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -68,7 +69,9 @@ class IssueRowPlain extends React.Component {
         }}
       >
         <TableCell>{id}</TableCell>
-        <TableCell>{status}</TableCell>
+        <TableCell>
+          <StatusBullet status={status} /> {status}
+        </TableCell>
         <TableCell>{owner}</TableCell>
         <TableCell>{effort}</TableCell>
         <TableCell>{created.toDateString()}</TableCell>

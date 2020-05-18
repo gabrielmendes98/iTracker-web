@@ -27,8 +27,20 @@ class About extends React.Component {
     const { apiAbout } = this.state;
     return (
       <div className="text-center">
-        <h3>Issue Tracker version 0.9</h3>
+        <h4>Issue Tracker UI v1.0</h4>
         <h4>{apiAbout}</h4>
+        <br />
+        <h4>Author: Gabriel Santiago</h4>
+        <p>
+          Full source code available at&nbsp;
+          <a
+            style={{ textDecoration: 'none', color: 'blue' }}
+            href="https://github.com/gabrielmendes98/issue-tracker"
+            target="_blank"
+          >
+            GitHub
+          </a>
+        </p>
       </div>
     );
   }

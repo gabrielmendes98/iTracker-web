@@ -19,8 +19,11 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 const styles = (theme) => ({
-  header: {
+  root: {
     backgroundColor: red[500],
+    color: '#fff',
+  },
+  expandIcon: {
     color: '#fff',
   },
 });
@@ -101,13 +104,13 @@ class IssueFilter extends React.Component {
       );
     return (
       <ExpansionPanel>
-        <ExpansionPanelSummary className={classes.header} expandIcon={<ExpandMoreIcon style={{ color: '#fff' }} />}>
+        <ExpansionPanelSummary className={classes.root} expandIcon={<ExpandMoreIcon className={classes.expandIcon} />}>
           <Typography variant="h6">Filter</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Grid container spacing={1}>
-            <Grid item xs={6} sm={4} md={3} lg={1}>
-              <FormControl style={{ marginRight: 20 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6} sm={3} md={2} lg={1} xl={1}>
+              <FormControl style={{ display: 'flex', width: '100%' }}>
                 <InputLabel>Status</InputLabel>
                 <Select native value={status} onChange={this.onChangeStatus}>
                   <option value="" />
@@ -119,9 +122,8 @@ class IssueFilter extends React.Component {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6} sm={4} md={3} lg={1}>
+            <Grid item xs={6} sm={3} md={2} lg={2} xl={1}>
               <TextField
-                style={{ width: 100 }}
                 label="Effort Min"
                 variant="outlined"
                 value={effortMin}
@@ -129,9 +131,8 @@ class IssueFilter extends React.Component {
                 onChange={this.onChangeEffortMin}
               />
             </Grid>
-            <Grid item xs={6} sm={4} md={3} lg={1}>
+            <Grid item xs={6} sm={3} md={2} lg={2} xl={1}>
               <TextField
-                style={{ width: 100 }}
                 label="Effort Max"
                 variant="outlined"
                 value={effortMax}
@@ -139,9 +140,9 @@ class IssueFilter extends React.Component {
                 onChange={this.onChangeEffortMax}
               />
             </Grid>
-            <Grid item xs={6} sm={4} md={3} lg={1}>
+            <Grid item xs={6} sm={3} md={2} lg={1} xl={1}>
               <Button
-                style={{ backgroundColor: red[500], color: '#fff' }}
+                style={{ backgroundColor: red[500], color: '#fff', marginTop: 8, marginBottom: 4 }}
                 variant="contained"
                 type="button"
                 onClick={this.applyFilter}

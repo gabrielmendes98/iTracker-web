@@ -129,7 +129,7 @@ class IssueEdit extends React.Component {
       return;
     }
     const { history } = this.props;
-    history.push('/issues');
+    history.goBack();
     this.setState({ drawer: open });
   };
 
@@ -165,7 +165,7 @@ class IssueEdit extends React.Component {
 
     return (
       <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
-        <Card style={{ margin: 20, width: '94%' }}>
+        <Card style={{ margin: 20, width: '94%', height: 'auto', minHeight: '700px' }}>
           <CardHeader
             title={`Editing issue ${id}`}
             style={{ backgroundColor: 'orangered', color: 'white', textAlign: 'center' }}

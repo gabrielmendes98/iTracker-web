@@ -1,68 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import './styles.css';
-import { NavLink, Link } from 'react-router-dom';
-import IssueAddNavItem from '../IssueAddNavItem';
-import SignInNavItem from '../SignInNavItem';
 
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Search from '../Search';
-
-const MenuGrow = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+export default class NavBar extends Component {
+  activeNav = () => {
+    const nav = document.getElementsByTagName('ul')[0];
+    const navLinks = document.querySelectorAll('ul li');
+    const burger = document.querySelector('.burger');
+    nav.classList.toggle('nav-active');
+    navLinks.forEach((link, index) => {
+      if (link.style.animation) {
+        link.style.animation = '';
+      } else {
+        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+      }
+    });
+    burger.classList.toggle('toggle');
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div>
-      <Button color="inherit" onClick={handleClick}>
-        <MoreVertIcon />
-      </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem to="/about" component={Link} onClick={handleClose}>
-          About
-        </MenuItem>
-      </Menu>
-    </div>
-  );
-};
-
-const NavBar = ({ user, onUserChange }) => (
-  <AppBar id="app-bar" position="static">
-    <Toolbar>
-      <div style={{ display: 'flex', flex: 1 }}>
-        <Typography style={{ marginRight: 20 }} variant="h6">
-          Issue Tracker
-        </Typography>
-        <Button color="inherit" exact to="/" component={NavLink}>
-          Home
-        </Button>
-        <Button color="inherit" to="/issues" component={NavLink}>
-          Issue List
-        </Button>
-        <Button color="inherit" to="/report" component={NavLink}>
-          Report
-        </Button>
-      </div>
-      <div style={{ width: 250 }}>
-        <Search />
-      </div>
-      <IssueAddNavItem user={user} />
-      <MenuGrow />
-      <SignInNavItem user={user} onUserChange={onUserChange} />
-    </Toolbar>
-  </AppBar>
-);
-
-export default NavBar;
+  render() {
+    return (
+      <header>
+        <nav>
+          <div class="logo">Issue Tracker</div>
+          <ul>
+            <li>
+              <NavLink exact to="/">
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/issues">Issue list</NavLink>
+            </li>
+            <li>
+              <NavLink to="/report">Report</NavLink>
+            </li>
+          </ul>
+          <div class="burger" onClick={this.activeNav}>
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+        </nav>
+      </header>
+    );
+  }
+}

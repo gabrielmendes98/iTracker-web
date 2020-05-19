@@ -40,14 +40,12 @@ class App extends React.Component {
     const { user } = this.state;
     if (user == null) return null;
     return (
-      <div style={{ visibility: this.state.ready ? 'visible' : 'hidden' }}>
+      <div id="wrapper" style={{ visibility: this.state.ready ? 'visible' : 'hidden' }}>
+        <NavBar user={user} onUserChange={this.onUserChange} />
         <div id="main">
-          <NavBar user={user} onUserChange={this.onUserChange} />
-          <div id="page-content">
-            <UserContext.Provider value={user}>
-              <Routes />
-            </UserContext.Provider>
-          </div>
+          <UserContext.Provider value={user}>
+            <Routes />
+          </UserContext.Provider>
         </div>
         <Footer />
       </div>

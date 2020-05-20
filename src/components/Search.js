@@ -46,10 +46,9 @@ class Search extends React.Component {
             container: (provided) => ({
               ...provided,
               width: '100%',
-              margin: '0 20px',
+              minWidth: 250,
             }),
           }}
-          style={{ width: 250 }}
           placeholder="Search..."
           menuPortalTarget={document.querySelector('body')}
           instanceId="search-select"

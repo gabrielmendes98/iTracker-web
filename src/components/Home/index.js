@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import bgImage from '../../assets/mern-stack-bg.png';
+import './styles.css';
 
 export default class Home extends Component {
   render() {

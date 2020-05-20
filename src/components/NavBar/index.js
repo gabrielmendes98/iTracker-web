@@ -23,7 +23,7 @@ const MenuGrow = () => {
   return (
     <div>
       <Button color="inherit" onClick={handleClick}>
-        <MoreVertIcon />
+        <MoreVertIcon className="about-icon" />
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem to="/about" component={Link} onClick={handleClose}>

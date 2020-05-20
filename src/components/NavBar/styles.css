@@ -171,3 +171,8 @@ header nav div ul li a:hover {
     display: none;
   }
 }
+
+.about-icon,
+.issue-add-navitem {
+  color: white;
+}

@@ -1,5 +1,6 @@
 header nav {
   display: flex;
+  flex: 1;
   justify-content: space-around;
   align-items: center;
   min-height: 60px;
@@ -10,19 +11,20 @@ header nav {
   color: #fff;
   letter-spacing: 2px;
   font-size: 20px;
+  margin: 0 20px;
 }
 
-header nav ul {
+header nav div ul {
   display: flex;
-  margin: 0;
+  margin: 0 20px;
   padding: 0;
 }
 
-header nav ul li {
+header nav div ul li {
   list-style: none;
 }
 
-header nav ul li a {
+header nav div ul li a {
   height: 60px;
   line-height: 60px;
   padding: 0 20px;
@@ -31,12 +33,12 @@ header nav ul li a {
   display: block;
 }
 
-header nav ul li a.active {
+header nav div ul li a.active {
   color: orange;
   border-bottom: 3px solid orange;
 }
 
-header nav ul li a:hover {
+header nav div ul li a:hover {
   color: #fff;
   background: orange;
 }
@@ -58,25 +60,57 @@ header nav ul li a:hover {
   body {
     overflow-x: hidden;
   }
-  header nav ul {
+  header nav div ul {
     z-index: 999 !important;
     position: absolute;
     right: 0;
     height: 180px;
-    top: 60px;
-    background-color: #3f51b5;
+    top: 120px;
+    background-color: #3f4448;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50%;
     transform: translateX(100%);
     transition: transform 0.5s ease-in;
+    margin: 0;
   }
-  header nav ul li {
+  .search {
+    z-index: 999 !important;
+    position: absolute;
+    right: 0;
+    height: 60px;
+    top: 60px;
+    background-color: #3f4448;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+  }
+  .user-profile {
+    z-index: 999 !important;
+    position: absolute;
+    right: 0;
+    height: 60px;
+    top: 300px;
+    background-color: #3f4448;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    width: 50%;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+    padding-left: 20px;
+  }
+  header nav div ul li {
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
-  header nav ul li {
+  header nav div ul li {
     opacity: 0;
   }
   .burger {
@@ -107,4 +141,11 @@ header nav ul li a:hover {
 }
 .toggle .line3 {
   transform: rotate(45deg) translate(-3px, -5px);
+}
+
+#left,
+#right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

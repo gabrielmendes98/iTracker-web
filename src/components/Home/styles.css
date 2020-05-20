@@ -11,4 +11,30 @@
   color: #fff;
   margin: -30px -30px 20px -30px;
   font-family: Helvetica;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg h1 {
+  font-size: 8vw;
+}
+
+.explanation {
+  width: 50vw;
+  margin: auto;
+}
+
+@media screen and (min-width: 1080px) {
+  .bg h1 {
+    font-size: 80px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .explanation {
+    width: 80vw;
+    margin: auto;
+  }
 }

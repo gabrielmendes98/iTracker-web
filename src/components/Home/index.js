@@ -5,14 +5,10 @@ export default class Home extends Component {
   render() {
     return (
       <>
-        <div className="bg" styles={{ color: '#fff' }}>
-          <h1
-            style={{ textAlign: 'center', margin: 'auto', verticalAlign: 'middle', lineHeight: '300px', fontSize: 100 }}
-          >
-            Issue Tracker
-          </h1>
+        <div className="bg">
+          <h1>Issue Tracker</h1>
         </div>
-        <div style={{ width: '50%', margin: 'auto' }}>
+        <div className="explanation">
           <h4 style={{ margin: '20px 0' }}>
             Issue Management is the process of identifying, reporting and resolving all such issues and bugs that may
             otherwise impair the progress of a project.

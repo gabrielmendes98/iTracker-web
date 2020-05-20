@@ -73,21 +73,6 @@ header nav div ul li a:hover {
   body {
     overflow-x: hidden;
   }
-  header nav div ul {
-    z-index: 999 !important;
-    position: absolute;
-    left: 0;
-    height: 180px;
-    top: 120px;
-    background-color: #3f4448;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 50%;
-    transform: translateX(-100%);
-
-    margin: 0;
-  }
   .search {
     z-index: 999 !important;
     position: absolute;
@@ -102,6 +87,21 @@ header nav div ul li a:hover {
     align-items: center;
     width: 50%;
     transform: translateX(-100%);
+  }
+  header nav div ul {
+    z-index: 999 !important;
+    position: absolute;
+    left: 0;
+    height: 180px;
+    top: 120px;
+    background-color: #3f4448;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    transform: translateX(-100%);
+
+    margin: 0;
   }
   .user-profile {
     z-index: 999 !important;

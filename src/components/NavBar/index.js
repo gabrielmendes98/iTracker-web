@@ -52,12 +52,18 @@ const NavBar = ({ user, onUserChange }) => {
         link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
       }
     });
+
     burger.classList.toggle('toggle');
   };
 
   return (
     <header>
       <nav>
+        <div className="burger" onClick={activeNav}>
+          <div className="line1"></div>
+          <div className="line2"></div>
+          <div className="line3"></div>
+        </div>
         <div id="left">
           <div className="logo">Issue Tracker</div>
           <div className="search">
@@ -83,11 +89,6 @@ const NavBar = ({ user, onUserChange }) => {
           <div className="user-profile">
             <SignInNavItem className="user-profile" user={user} onUserChange={onUserChange} />
           </div>
-        </div>
-        <div className="burger" onClick={activeNav}>
-          <div className="line1"></div>
-          <div className="line2"></div>
-          <div className="line3"></div>
         </div>
       </nav>
     </header>

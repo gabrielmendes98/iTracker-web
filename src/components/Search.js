@@ -46,7 +46,6 @@ class Search extends React.Component {
             container: (provided) => ({
               ...provided,
               width: '100%',
-              minWidth: 250,
             }),
           }}
           placeholder="Search..."

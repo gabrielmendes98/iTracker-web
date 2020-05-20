@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import './styles.css';
 import Search from '../Search';
@@ -34,13 +34,35 @@ const MenuGrow = () => {
   );
 };
 
-const NavBar = ({ user, onUserChange }) => {
-  const activeNav = () => {
+class NavBar extends Component {
+  componentDidMount() {
     const nav = document.getElementsByTagName('ul')[0];
     const search = document.querySelector('.search');
-    const navLinks = document.querySelectorAll('ul li');
     const userControl = document.querySelector('.user-profile');
+    window.addEventListener(
+      'resize',
+      () => {
+        if (window.innerWidth > 1035) {
+          nav.classList.remove('transition');
+          search.classList.remove('transition');
+          userControl.classList.remove('transition');
+        }
+      },
+      false
+    );
+  }
+
+  activeNav = () => {
+    const nav = document.getElementsByTagName('ul')[0];
+    const search = document.querySelector('.search');
+    const userControl = document.querySelector('.user-profile');
+    const navLinks = document.querySelectorAll('ul li');
     const burger = document.querySelector('.burger');
+
+    nav.classList.add('transition');
+    search.classList.add('transition');
+    userControl.classList.add('transition');
+
     nav.classList.toggle('nav-active');
     search.classList.toggle('nav-active');
     userControl.classList.toggle('nav-active');
@@ -56,43 +78,46 @@ const NavBar = ({ user, onUserChange }) => {
     burger.classList.toggle('toggle');
   };
 
-  return (
-    <header>
-      <nav>
-        <div className="burger" onClick={activeNav}>
-          <div className="line1"></div>
-          <div className="line2"></div>
-          <div className="line3"></div>
-        </div>
-        <div id="left">
-          <div className="logo">Issue Tracker</div>
-          <div className="search">
-            <Search />
+  render() {
+    const { user, onUserChange } = this.props;
+    return (
+      <header>
+        <nav>
+          <div className="burger" onClick={this.activeNav}>
+            <div className="line1"></div>
+            <div className="line2"></div>
+            <div className="line3"></div>
           </div>
-          <ul>
-            <li>
-              <NavLink exact to="/">
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/issues">Issue list</NavLink>
-            </li>
-            <li>
-              <NavLink to="/report">Report</NavLink>
-            </li>
-          </ul>
-        </div>
-        <div id="right">
-          <IssueAddNavItem user={user} />
-          <MenuGrow />
-          <div className="user-profile">
-            <SignInNavItem className="user-profile" user={user} onUserChange={onUserChange} />
+          <div id="left">
+            <div className="logo">Issue Tracker</div>
+            <div className="search">
+              <Search />
+            </div>
+            <ul>
+              <li>
+                <NavLink exact to="/">
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/issues">Issue list</NavLink>
+              </li>
+              <li>
+                <NavLink to="/report">Report</NavLink>
+              </li>
+            </ul>
           </div>
-        </div>
-      </nav>
-    </header>
-  );
-};
+          <div id="right">
+            <IssueAddNavItem user={user} />
+            <MenuGrow />
+            <div className="user-profile">
+              <SignInNavItem className="user-profile" user={user} onUserChange={onUserChange} />
+            </div>
+          </div>
+        </nav>
+      </header>
+    );
+  }
+}
 
 export default NavBar;

@@ -1,0 +1,20 @@
+.user-control {
+  display: flex;
+  flex-direction: row;
+}
+
+.popper {
+  z-index: 999 !important;
+}
+
+.MuiButtonBase-root.username-button {
+  color: white;
+  text-transform: none;
+  border: none;
+}
+
+@media screen and (min-width: 1035px) {
+  .MuiButtonBase-root.username-button {
+    display: none;
+  }
+}

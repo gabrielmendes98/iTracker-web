@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import googleIcon from '../../assets/search.png';
-import withToast from './withToast';
+import btnGoogle from '../../../assets/btnGoogle.png';
+import withToast from '../withToast';
+import './styles.css';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -94,16 +95,13 @@ class SignInNavItem extends Component {
     if (user.signedIn) {
       return (
         <>
-          <Button
-            style={{ color: 'white', textTransform: 'none', border: 'none' }}
-            variant="outlined"
-            type="button"
-            onClick={this.showPopover}
-          >
-            {user.givenName}
-          </Button>
-          <Avatar alt={user.givenName} src={user.picture} onClick={this.showPopover} style={{ cursor: 'pointer' }} />
-          <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} role={undefined} transition>
+          <div className="user-control" onClick={this.showPopover}>
+            <Avatar alt={user.givenName} src={user.picture} style={{ cursor: 'pointer' }} />
+            <Button className="username-button" variant="outlined" type="button">
+              {user.givenName}
+            </Button>
+          </div>
+          <Popper className="popper" open={Boolean(anchorEl)} anchorEl={anchorEl} role={undefined} transition>
             {({ TransitionProps, placement }) => (
               <Grow {...TransitionProps} style={{ transformOrigin: 'center bottom' }}>
                 <Paper>
@@ -131,31 +129,10 @@ class SignInNavItem extends Component {
         >
           Sign in
         </Button>
-        <Dialog onClose={this.hideModal} open={modalOpen} fullWidth maxWidth="xs">
+        <Dialog onClose={this.hideModal} open={modalOpen}>
           <MuiDialogTitle onClose={this.hideModal}>Sign in</MuiDialogTitle>
           <MuiDialogContent dividers>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: 'red', color: 'white', textTransform: 'none', width: '100%' }}
-              onClick={this.signIn}
-            >
-              <div style={{ width: '40%' }}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    padding: 0,
-                    height: 30,
-                    width: 30,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <img src={googleIcon} height="24" width="24" />
-                </Paper>
-              </div>
-              <div style={{ width: '60%', textAlign: 'left', fontSize: 18 }}>Google</div>
-            </Button>
+            <img src={btnGoogle} style={{ width: 'auto', height: 60 }} onClick={this.signIn} />
           </MuiDialogContent>
           <MuiDialogActions>
             <p style={{ color: 'blue', cursor: 'pointer' }} onClick={this.hideModal}>

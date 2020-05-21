@@ -88,6 +88,10 @@ class NavBar extends Component {
     burger.classList.toggle('toggle');
   };
 
+  navHandling = () => {
+    if (window.innerWidth <= 1035) this.activeNav();
+  };
+
   render() {
     const { user, onUserChange } = this.props;
     return (
@@ -105,17 +109,17 @@ class NavBar extends Component {
             </div>
             <ul>
               <li>
-                <NavLink exact to="/" onClick={this.activeNav}>
+                <NavLink exact to="/" onClick={this.navHandling}>
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/issues" onClick={this.activeNav}>
+                <NavLink to="/issues" onClick={this.navHandling}>
                   Issue list
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/report" onClick={this.activeNav}>
+                <NavLink to="/report" onClick={this.navHandling}>
                   Report
                 </NavLink>
               </li>

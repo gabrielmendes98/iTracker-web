@@ -39,6 +39,9 @@ class NavBar extends Component {
     const nav = document.getElementsByTagName('ul')[0];
     const search = document.querySelector('.search');
     const userControl = document.querySelector('.user-profile');
+    const burger = document.querySelector('.burger');
+    const navLinks = document.querySelectorAll('ul li');
+
     window.addEventListener(
       'resize',
       () => {
@@ -46,6 +49,13 @@ class NavBar extends Component {
           nav.classList.remove('transition');
           search.classList.remove('transition');
           userControl.classList.remove('transition');
+          nav.classList.remove('nav-active');
+          search.classList.remove('nav-active');
+          userControl.classList.remove('nav-active');
+          burger.classList.remove('toggle');
+          navLinks.forEach((link, index) => {
+            link.style.animation = '';
+          });
         }
       },
       false

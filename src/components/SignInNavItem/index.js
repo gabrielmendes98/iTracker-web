@@ -84,6 +84,7 @@ class SignInNavItem extends Component {
       await auth2.signOut();
       const { onUserChange } = this.props;
       onUserChange({ signedIn: false, givenName: '', picture: '' });
+      this.setState({ anchorEl: null });
     } catch (error) {
       showError(`Error signing out: ${error}`);
     }

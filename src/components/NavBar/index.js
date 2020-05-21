@@ -95,15 +95,19 @@ class NavBar extends Component {
             </div>
             <ul>
               <li>
-                <NavLink exact to="/">
+                <NavLink exact to="/" onClick={this.activeNav}>
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/issues">Issue list</NavLink>
+                <NavLink to="/issues" onClick={this.activeNav}>
+                  Issue list
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/report">Report</NavLink>
+                <NavLink to="/report" onClick={this.activeNav}>
+                  Report
+                </NavLink>
               </li>
             </ul>
           </div>

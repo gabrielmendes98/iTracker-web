@@ -1,0 +1,17 @@
+.drawer-paper {
+  max-width: 500px;
+  width: 50%;
+}
+
+@media screen and (max-width: 1000px) {
+  .drawer-paper {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .drawer-paper {
+    max-width: 600px;
+    width: 100%;
+  }
+}

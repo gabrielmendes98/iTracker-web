@@ -1,15 +1,12 @@
 import React from 'react';
+import './styles.css';
 
 import { withStyles } from '@material-ui/styles';
 import Drawer from '@material-ui/core/Drawer';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { Card, CardHeader, CardContent, Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
 const useStyles = (theme) => ({
-  drawerPaper: {
-    width: '30%',
-    minWidth: 500,
-  },
   cardRoot: {
     width: '90%',
     margin: '20px auto',
@@ -28,7 +25,7 @@ const IssueDetail = ({ issue, drawer, toggleDrawer, classes }) => {
     const { description, title, id } = issue;
     const displayDescription = description !== null ? description : 'This issue does not have a description =(';
     return (
-      <Drawer classes={{ paper: classes.drawerPaper }} anchor={'left'} open={drawer} onClose={toggleDrawer(false)}>
+      <Drawer classes={{ paper: 'drawer-paper' }} anchor={'left'} open={drawer} onClose={toggleDrawer(false)}>
         <Card classes={{ root: classes.cardRoot }}>
           <CardHeader
             classes={{ root: classes.cardHeader, subheader: classes.cardSubheader }}
@@ -47,6 +44,13 @@ const IssueDetail = ({ issue, drawer, toggleDrawer, classes }) => {
             </pre>
           </CardContent>
         </Card>
+        <Button
+          style={{ color: 'white', backgroundColor: '#f44336', width: '90%', margin: '20px auto' }}
+          variant="contained"
+          onClick={toggleDrawer(false)}
+        >
+          Close
+        </Button>
       </Drawer>
     );
   }

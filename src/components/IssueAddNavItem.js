@@ -51,9 +51,9 @@ class IssueAddNavItem extends React.Component {
     return (
       <div>
         <Tooltip title="Add issue">
-          <span>
+          <span className="issue-add-navitem">
             <IconButton color="inherit" onClick={() => this.setState({ open: true })} disabled={!signedIn}>
-              <AddIcon className="issue-add-navitem" />
+              <AddIcon />
             </IconButton>
           </span>
         </Tooltip>

@@ -8,18 +8,10 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { withStyles } from '@material-ui/styles';
 import withToast from './withToast';
 import Alert from '@material-ui/lab/Alert';
 
 import store from '../store.js';
-
-const StyledDrawer = withStyles({
-  paper: {
-    width: '30%',
-    minWidth: 500,
-  },
-})(Drawer);
 
 class IssueEdit extends React.Component {
   constructor() {
@@ -164,8 +156,8 @@ class IssueEdit extends React.Component {
     const user = this.context;
 
     return (
-      <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
-        <Card style={{ margin: 20, width: '94%', height: 'auto', minHeight: '700px' }}>
+      <Drawer classes={{ paper: 'drawer-paper' }} anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
+        <Card style={{ margin: '20px', width: '90%', height: 'auto', minHeight: '720px' }}>
           <CardHeader
             title={`Editing issue ${id}`}
             style={{ backgroundColor: 'orangered', color: 'white', textAlign: 'center' }}
@@ -274,9 +266,19 @@ class IssueEdit extends React.Component {
                     />
                   </Grid>
                   <Grid item xs={3}></Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={9} style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button disabled={!user.signedIn} variant="contained" type="submit" color="primary">
                       Submit
+                    </Button>
+                    <Button
+                      style={{
+                        color: 'white',
+                        backgroundColor: '#f44336',
+                      }}
+                      variant="contained"
+                      onClick={this.toggleDrawer(false)}
+                    >
+                      Close
                     </Button>
                   </Grid>
                   <Grid item xs={7}>
@@ -288,7 +290,7 @@ class IssueEdit extends React.Component {
           </CardContent>
         </Card>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0 20px', width: '94%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px', width: '90%' }}>
           <Button
             startIcon={<ArrowBackIosIcon />}
             variant="contained"
@@ -310,7 +312,7 @@ class IssueEdit extends React.Component {
             Next
           </Button>
         </div>
-      </StyledDrawer>
+      </Drawer>
     );
   }
 }

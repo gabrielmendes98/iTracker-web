@@ -17,6 +17,7 @@
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "comma-dangle": 0,
     "react/jsx-uses-vars": 1,

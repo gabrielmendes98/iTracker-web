@@ -28,7 +28,7 @@ export default function withToast(OriginalComponent) {
     render() {
       const { toastType, toastVisible, toastMessage } = this.state;
       return (
-        <React.Fragment>
+        <>
           <OriginalComponent
             showError={this.showError}
             showSuccess={this.showSuccess}
@@ -45,7 +45,7 @@ export default function withToast(OriginalComponent) {
               {toastMessage}
             </Alert>
           </Snackbar>
-        </React.Fragment>
+        </>
       );
     }
   };

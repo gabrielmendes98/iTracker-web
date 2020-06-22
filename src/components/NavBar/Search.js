@@ -3,7 +3,7 @@ import SelectAsync from 'react-select/async';
 import { withRouter } from 'react-router-dom';
 
 import grapQLFetch from '../graphQLFetch';
-import withToast from './withToast';
+import withToast from '../withToast';
 
 class Search extends React.Component {
   constructor(props) {

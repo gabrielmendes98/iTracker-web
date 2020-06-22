@@ -1,11 +1,11 @@
 import React from 'react';
 import IssueFilter from './IssueFilter';
-import IssueTable from './IssueTable';
+import IssueTable from '../../components/IssueTable';
 import graphQLFetch from '../graphQLFetch';
 import URLSearchParams from 'url-search-params';
 import IssueDetail from './IssueDetail';
-import store from '../store.js';
-import withToast from './withToast';
+import store from '../../store.js';
+import withToast from '../../components/withToast';
 import PaginationLink from './PaginationLink';
 import Button from '@material-ui/core/Button';
 

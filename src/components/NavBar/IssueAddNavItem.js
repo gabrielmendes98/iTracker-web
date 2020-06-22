@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-import withToast from './withToast';
+import withToast from '../withToast';
 
 class IssueAddNavItem extends React.Component {
   constructor(props) {

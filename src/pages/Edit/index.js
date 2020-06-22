@@ -1,17 +1,17 @@
 import React from 'react';
 import graphQLFetch from '../graphQLFetch';
 import { Link } from 'react-router-dom';
-import UserContext from '../UserContext';
+import UserContext from '../../UserContext';
 
 import { FormControl, Card, CardHeader, CardContent, Grid, Select, TextField, Button, Drawer } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import withToast from './withToast';
+import withToast from '../../components/withToast';
 import Alert from '@material-ui/lab/Alert';
 
-import store from '../store.js';
+import store from '../../store.js';
 
 class IssueEdit extends React.Component {
   constructor() {

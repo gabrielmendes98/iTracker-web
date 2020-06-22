@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import btnGoogle from '../../../assets/btnGoogle.png';
-import withToast from '../withToast';
+import withToast from '../../withToast';
 import './styles.css';
 
 import Button from '@material-ui/core/Button';

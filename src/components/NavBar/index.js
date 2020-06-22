@@ -1,13 +1,16 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
+
 import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import './styles.css';
-import Search from '../Search';
-import IssueAddNavItem from '../IssueAddNavItem';
-import SignInNavItem from '../SignInNavItem';
-import Button from '@material-ui/core/Button';
+
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+
+import SignInNavItem from './SignInNavItem';
+import IssueAddNavItem from './IssueAddNavItem';
+import Search from './Search';
+
+import './styles.css';
 
 const MenuGrow = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -88,6 +91,10 @@ class NavBar extends Component {
     burger.classList.toggle('toggle');
   };
 
+  handleKeyPress = (e) => {
+    if (e.charCode === 98) this.activeNav();
+  };
+
   navHandling = () => {
     if (window.innerWidth <= 1035) this.activeNav();
   };
@@ -97,10 +104,10 @@ class NavBar extends Component {
     return (
       <header>
         <nav>
-          <div className="burger" onClick={this.activeNav}>
-            <div className="line1"></div>
-            <div className="line2"></div>
-            <div className="line3"></div>
+          <div className="burger" onClick={this.activeNav} onKeyPress={this.handleKeyPress} role="button" tabIndex={0}>
+            <div className="line1" />
+            <div className="line2" />
+            <div className="line3" />
           </div>
           <div id="left">
             <div className="logo">Issue Tracker</div>

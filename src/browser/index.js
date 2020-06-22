@@ -1,9 +1,11 @@
-import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+
 import App from '../App';
 import store from '../store';
+
+import 'babel-polyfill';
 
 /* eslint-disable no-underscore-dangle */
 store.initialData = window.__INITIAL_DATA__;

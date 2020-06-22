@@ -1,20 +1,28 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
+
+import {
+  Button,
+  Dialog,
+  MuiDialogTitle,
+  MuiDialogContent,
+  MuiDialogActions,
+  Paper,
+  Avatar,
+  MenuItem,
+  ClickAwayListener,
+  Grow,
+  Popper,
+  MenuList,
+} from '@material-ui/core';
+
 import btnGoogle from '../../../assets/btnGoogle.png';
 import withToast from '../../withToast';
-import './styles.css';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
+import './styles.css';
 
 class SignInNavItem extends Component {
   constructor(props) {
@@ -133,7 +141,7 @@ class SignInNavItem extends Component {
         <Dialog onClose={this.hideModal} open={modalOpen}>
           <MuiDialogTitle onClose={this.hideModal}>Sign in</MuiDialogTitle>
           <MuiDialogContent dividers>
-            <img src={btnGoogle} style={{ width: 'auto', height: 60 }} onClick={this.signIn} />
+            <img src={btnGoogle} style={{ width: 'auto', height: 60 }} onClick={this.signIn} alt="Login with Google" />
           </MuiDialogContent>
           <MuiDialogActions>
             <p style={{ color: 'blue', cursor: 'pointer' }} onClick={this.hideModal}>

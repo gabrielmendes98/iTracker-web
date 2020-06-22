@@ -1,8 +1,9 @@
 import React from 'react';
-import SelectAsync from 'react-select/async';
 import { withRouter } from 'react-router-dom';
 
-import grapQLFetch from '../graphQLFetch';
+import SelectAsync from 'react-select/async';
+
+import grapQLFetch from '../../services/graphQLFetch';
 import withToast from '../withToast';
 
 class Search extends React.Component {
@@ -59,7 +60,7 @@ class Search extends React.Component {
         />
       );
     }
-    return <div></div>;
+    return <div />;
   }
 }
 

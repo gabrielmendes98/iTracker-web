@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import URLSearchParams from 'url-search-params';
 
-import IssueFilter from './IssueFilter';
+import IssueFilter from '../../components/IssueFilter';
 import IssueTable from './IssueTable';
 import graphQLFetch from '../../services/graphQLFetch';
 import IssueDetail from './IssueDetail';

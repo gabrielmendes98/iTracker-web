@@ -1,26 +1,15 @@
 import React from 'react';
-import IssueFilter from './IssueFilter';
+
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+
+import IssueFilter from '../../components/IssueFilter';
 import withToast from '../../components/withToast';
-import graphQLFetch from '../graphQLFetch';
+import graphQLFetch from '../../services/graphQLFetch';
 import store from '../../store';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 const statuses = ['New', 'Assigned', 'Fixed', 'Closed'];
 
 class IssueReport extends React.Component {
-  constructor(props) {
-    super(props);
-    const stats = store.initialData ? store.initialData.issueCounts : null;
-    delete store.initialData;
-    this.state = { stats };
-  }
-
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = {};
@@ -46,6 +35,13 @@ class IssueReport extends React.Component {
     }`;
     const data = await graphQLFetch(query, vars, showError);
     return data;
+  }
+
+  constructor(props) {
+    super(props);
+    const stats = store.initialData ? store.initialData.issueCounts : null;
+    delete store.initialData;
+    this.state = { stats };
   }
 
   componentDidMount() {
@@ -104,7 +100,7 @@ class IssueReport extends React.Component {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
+                <TableCell />
                 {headerColumns}
                 <TableCell style={{ fontWeight: 'bold' }}>Total</TableCell>
               </TableRow>

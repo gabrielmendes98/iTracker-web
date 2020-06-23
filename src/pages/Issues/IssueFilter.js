@@ -1,22 +1,26 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+
 import URLSearchParams from 'url-search-params';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {
+  Button,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Typography,
+  InputLabel,
+  FormControl,
+  Select,
+  TextField,
+  Grid,
+} from '@material-ui/core';
 
 import { red } from '@material-ui/core/colors';
-import { withStyles } from '@material-ui/styles';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { withStyles } from '@material-ui/styles';
 
 const styles = (theme) => ({
   root: {
@@ -148,7 +152,8 @@ class IssueFilter extends React.Component {
                 onClick={this.applyFilter}
               >
                 Apply
-              </Button>{' '}
+              </Button>
+              {' '}
               {resetButton}
             </Grid>
           </Grid>

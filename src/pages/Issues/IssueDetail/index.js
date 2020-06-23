@@ -1,12 +1,12 @@
 import React from 'react';
-import './styles.css';
 
 import { withStyles } from '@material-ui/styles';
-import Drawer from '@material-ui/core/Drawer';
-import { Card, CardHeader, CardContent, Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
+import { Card, CardHeader, CardContent, Button, Drawer } from '@material-ui/core';
 
-const useStyles = (theme) => ({
+import './styles.css';
+
+const useStyles = (_) => ({
   cardRoot: {
     width: '90%',
     margin: '20px auto',
@@ -25,7 +25,7 @@ const IssueDetail = ({ issue, drawer, toggleDrawer, classes }) => {
     const { description, title, id } = issue;
     const displayDescription = description !== null ? description : 'This issue does not have a description =(';
     return (
-      <Drawer classes={{ paper: 'drawer-paper' }} anchor={'left'} open={drawer} onClose={toggleDrawer(false)}>
+      <Drawer classes={{ paper: 'drawer-paper' }} anchor="left" open={drawer} onClose={toggleDrawer(false)}>
         <Card classes={{ root: classes.cardRoot }}>
           <CardHeader
             classes={{ root: classes.cardHeader, subheader: classes.cardSubheader }}

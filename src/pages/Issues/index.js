@@ -1,50 +1,18 @@
 import React from 'react';
-import IssueFilter from './IssueFilter';
-import IssueTable from '../../components/IssueTable';
-import graphQLFetch from '../graphQLFetch';
-import URLSearchParams from 'url-search-params';
-import IssueDetail from './IssueDetail';
-import store from '../../store.js';
-import withToast from '../../components/withToast';
-import PaginationLink from './PaginationLink';
+
 import Button from '@material-ui/core/Button';
 
+import URLSearchParams from 'url-search-params';
+
+import IssueFilter from './IssueFilter';
+import IssueTable from './IssueTable';
+import graphQLFetch from '../../services/graphQLFetch';
+import IssueDetail from './IssueDetail';
+import store from '../../store';
+import withToast from '../../components/withToast';
+import PaginationLink from './PaginationLink';
+
 class IssueList extends React.Component {
-  constructor() {
-    super();
-    const initialData = store.initialData || { issueList: { issues: null, pages: null }, issue: {} };
-    const {
-      issueList: { issues, pages },
-      issue: selectedIssue,
-    } = initialData;
-
-    delete store.initialData;
-    this.state = { issues, selectedIssue, pages };
-  }
-
-  componentDidMount() {
-    const { issues } = this.state;
-    if (issues == null) this.loadData();
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-      location: { search: prevSearch },
-      match: {
-        params: { id: prevId },
-      },
-    } = prevProps;
-    const {
-      location: { search },
-      match: {
-        params: { id },
-      },
-    } = this.props;
-    if (prevSearch !== search || prevId !== id) {
-      this.loadData();
-    }
-  }
-
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = { hasSelection: false, selectedId: 0 };
@@ -95,6 +63,41 @@ class IssueList extends React.Component {
 
     const data = await graphQLFetch(query, vars, showError);
     return data;
+  }
+
+  constructor() {
+    super();
+    const initialData = store.initialData || { issueList: { issues: null, pages: null }, issue: {} };
+    const {
+      issueList: { issues, pages },
+      issue: selectedIssue,
+    } = initialData;
+
+    delete store.initialData;
+    this.state = { issues, selectedIssue, pages };
+  }
+
+  componentDidMount() {
+    const { issues } = this.state;
+    if (issues == null) this.loadData();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      location: { search: prevSearch },
+      match: {
+        params: { id: prevId },
+      },
+    } = prevProps;
+    const {
+      location: { search },
+      match: {
+        params: { id },
+      },
+    } = this.props;
+    if (prevSearch !== search || prevId !== id) {
+      this.loadData();
+    }
   }
 
   loadData = async () => {
@@ -199,7 +202,7 @@ class IssueList extends React.Component {
     if (issues === null) return null;
     const { selectedIssue, pages } = this.state;
     return (
-      <React.Fragment>
+      <>
         <IssueFilter urlBase="/issues" />
         <IssueTable
           issues={issues}
@@ -208,8 +211,8 @@ class IssueList extends React.Component {
           style={{ marginTop: 20, marginBottom: 20 }}
         />
         <PaginationLink pages={pages} />
-        <IssueDetail issue={selectedIssue} drawer={true} toggleDrawer={this.toggleDrawer} />
-      </React.Fragment>
+        <IssueDetail issue={selectedIssue} drawer toggleDrawer={this.toggleDrawer} />
+      </>
     );
   }
 }

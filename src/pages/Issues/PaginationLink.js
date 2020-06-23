@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-expressions */
 import React from 'react';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
-import Pagination from '@material-ui/lab/Pagination';
-import PaginationItem from '@material-ui/lab/PaginationItem';
+
+import {Pagination, PaginationItem} from '@material-ui/lab';
 
 export default function PaginationLink({ pages }) {
   return (

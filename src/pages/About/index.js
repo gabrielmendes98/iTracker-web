@@ -1,18 +1,19 @@
 import React from 'react';
+
 import store from '../../store';
-import graphQLFetch from '../graphQLFetch';
+import graphQLFetch from '../../services/graphQLFetch';
 
 class About extends React.Component {
+  static async fetchData() {
+    const data = await graphQLFetch('query {about}');
+    return data;
+  }
+
   constructor(props) {
     super(props);
     const apiAbout = store.initialData ? store.initialData.about : null;
     delete store.initialData;
     this.state = { apiAbout };
-  }
-
-  static async fetchData() {
-    const data = await graphQLFetch('query {about}');
-    return data;
   }
 
   async componentDidMount() {
@@ -36,6 +37,7 @@ class About extends React.Component {
           <a
             style={{ textDecoration: 'none', color: 'blue' }}
             href="https://github.com/gabrielmendes98/issue-tracker"
+            rel="noreferrer noopener"
             target="_blank"
           >
             GitHub

@@ -1,19 +1,36 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
-import graphQLFetch from '../graphQLFetch';
 import { Link } from 'react-router-dom';
-import UserContext from '../../UserContext';
 
 import { FormControl, Card, CardHeader, CardContent, Grid, Select, TextField, Button, Drawer } from '@material-ui/core';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { ArrowForwardIosIcon, ArrowBackIosIcon } from '@material-ui/icons';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import withToast from '../../components/withToast';
 import Alert from '@material-ui/lab/Alert';
 
-import store from '../../store.js';
+import DateFnsUtils from '@date-io/date-fns';
+
+import graphQLFetch from '../../services/graphQLFetch';
+import UserContext from '../../UserContext';
+import withToast from '../../components/withToast';
+import store from '../../store';
 
 class IssueEdit extends React.Component {
+  static async fetchData(match, search, showError) {
+    const query = `query issue($id: Int!) {
+      issue(id: $id) {
+        id title status owner
+        effort created due description
+      }
+    }`;
+
+    const {
+      params: { id },
+    } = match;
+    const intId = parseInt(id, 10);
+    const result = await graphQLFetch(query, { id: intId }, showError);
+    return result;
+  }
+
   constructor() {
     super();
     const issue = store.initialData ? store.initialData.issue : null;
@@ -32,24 +49,12 @@ class IssueEdit extends React.Component {
 
   componentDidUpdate(prevProps) {
     const prevId = prevProps.match.params.id;
-    const { id } = this.props.match.params;
-    if (id !== prevId) this.loadData();
-  }
-
-  static async fetchData(match, search, showError) {
-    const query = `query issue($id: Int!) {
-      issue(id: $id) {
-        id title status owner
-        effort created due description
-      }
-    }`;
-
     const {
-      params: { id },
-    } = match;
-    const intId = parseInt(id, 10);
-    const result = await graphQLFetch(query, { id: intId }, showError);
-    return result;
+      match: {
+        params: { id },
+      },
+    } = this.props;
+    if (id !== prevId) this.loadData();
   }
 
   loadData = async () => {
@@ -129,16 +134,22 @@ class IssueEdit extends React.Component {
     const { issue } = this.state;
     if (issue === null) return null;
 
-    const { id, title, status, owner, effort, description, created, due } = this.state.issue;
+    const {
+      issue: { id, title, status, owner, effort, description, created, due },
+    } = this.state;
     const { isFieldsValid, drawer } = this.state;
+    const {
+      match: {
+        params: { id: propsId },
+      },
+    } = this.props;
 
-    const propsId = this.props.match.params.id;
     if (id === undefined) {
       if (propsId !== null) {
         return (
-          <StyledDrawer anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
+          <Drawer anchor="right" open={drawer} onClose={this.toggleDrawer(false)}>
             <h3>{`Issue with ID ${propsId} not found. If you just created it, wait while we redirect you to the edit page`}</h3>
-          </StyledDrawer>
+          </Drawer>
         );
       }
       return null;
@@ -156,7 +167,7 @@ class IssueEdit extends React.Component {
     const user = this.context;
 
     return (
-      <Drawer classes={{ paper: 'drawer-paper' }} anchor={'right'} open={drawer} onClose={this.toggleDrawer(false)}>
+      <Drawer classes={{ paper: 'drawer-paper' }} anchor="right" open={drawer} onClose={this.toggleDrawer(false)}>
         <Card style={{ margin: '20px', width: '90%', height: 'auto', minHeight: '720px' }}>
           <CardHeader
             title={`Editing issue ${id}`}
@@ -265,7 +276,7 @@ class IssueEdit extends React.Component {
                       margin="dense"
                     />
                   </Grid>
-                  <Grid item xs={3}></Grid>
+                  <Grid item xs={3} />
                   <Grid item xs={9} style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button disabled={!user.signedIn} variant="contained" type="submit" color="primary">
                       Submit

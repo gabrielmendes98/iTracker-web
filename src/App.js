@@ -1,13 +1,23 @@
 import React from 'react';
-import graphQLFetch from './graphQLFetch';
+
+import graphQLFetch from './services/graphQLFetch';
 import store from './store';
 import Routes from './router';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import UserContext from './UserContext';
+
 import './styles.css';
 
 class App extends React.Component {
+  static async fetchData(cookie) {
+    const query = `query { user {
+      signedIn givenName picture
+    }}`;
+    const data = await graphQLFetch(query, null, null, cookie);
+    return data;
+  }
+
   constructor(props) {
     super(props);
     const user = store.userData ? store.userData.user : null;
@@ -24,14 +34,6 @@ class App extends React.Component {
     }
   }
 
-  static async fetchData(cookie) {
-    const query = `query { user {
-      signedIn givenName picture
-    }}`;
-    const data = await graphQLFetch(query, null, null, cookie);
-    return data;
-  }
-
   onUserChange = (user) => {
     this.setState({ user });
   };
@@ -39,8 +41,9 @@ class App extends React.Component {
   render() {
     const { user } = this.state;
     if (user == null) return null;
+    const { ready } = this.state;
     return (
-      <div id="wrapper" style={{ visibility: this.state.ready ? 'visible' : 'hidden' }}>
+      <div id="wrapper" style={{ visibility: ready ? 'visible' : 'hidden' }}>
         <NavBar user={user} onUserChange={this.onUserChange} />
         <div id="main">
           <UserContext.Provider value={user}>

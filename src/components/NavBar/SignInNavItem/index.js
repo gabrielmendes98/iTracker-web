@@ -6,9 +6,9 @@ import React, { Component } from 'react';
 import {
   Button,
   Dialog,
-  MuiDialogTitle,
-  MuiDialogContent,
-  MuiDialogActions,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Paper,
   Avatar,
   MenuItem,
@@ -138,15 +138,15 @@ class SignInNavItem extends Component {
           Sign in
         </Button>
         <Dialog onClose={this.hideModal} open={modalOpen}>
-          <MuiDialogTitle onClose={this.hideModal}>Sign in</MuiDialogTitle>
-          <MuiDialogContent dividers>
+          <DialogTitle onClose={this.hideModal}>Sign in</DialogTitle>
+          <DialogContent dividers>
             <img src={btnGoogle} style={{ width: 'auto', height: 60 }} onClick={this.signIn} alt="Login with Google" />
-          </MuiDialogContent>
-          <MuiDialogActions>
+          </DialogContent>
+          <DialogActions>
             <p style={{ color: 'blue', cursor: 'pointer' }} onClick={this.hideModal}>
               Cancel
             </p>
-          </MuiDialogActions>
+          </DialogActions>
         </Dialog>
       </>
     );

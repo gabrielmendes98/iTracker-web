@@ -1,5 +1,6 @@
 import serialize from 'serialize-javascript';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 export default function template(body, initialData, userData) {

@@ -16,7 +16,7 @@ import {
 import { green, red } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 
-import { CheckCircleIcon, DeleteIcon, EditIcon } from '@material-ui/icons';
+import { CheckCircle, Delete, Edit } from '@material-ui/icons';
 
 import UserContext from '../../../UserContext';
 import IssueStatus from './IssueStatus';
@@ -73,7 +73,7 @@ function IssueRowPlain({ issue, location: { search }, closeIssue, deleteIssue, i
       <TableCell align="right" onClick={handlePropagation}>
         <Tooltip title="Edit issue">
           <IconButton to={`/edit/${id}`} component={Link}>
-            <EditIcon style={{ color: '#000' }} />
+            <Edit style={{ color: '#000' }} />
           </IconButton>
         </Tooltip>
         <Tooltip title="Close issue">
@@ -85,7 +85,7 @@ function IssueRowPlain({ issue, location: { search }, closeIssue, deleteIssue, i
                 closeIssue(index);
               }}
             >
-              <CheckCircleIcon />
+              <CheckCircle />
             </StyledIconButtonClose>
           </span>
         </Tooltip>
@@ -98,7 +98,7 @@ function IssueRowPlain({ issue, location: { search }, closeIssue, deleteIssue, i
                 deleteIssue(index);
               }}
             >
-              <DeleteIcon />
+              <Delete />
             </StyledIconButtonDelete>
           </span>
         </Tooltip>

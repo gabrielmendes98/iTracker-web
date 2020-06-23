@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { StaticRouter, matchPath } from 'react-router-dom';
 
 import App from '../src/App';
 import template from './template';
-
-import { StaticRouter, matchPath } from 'react-router-dom';
-
-import routes from '../src/routes.js';
-import store from '../src/store.js';
+import routes from '../src/router/routes';
+import store from '../src/store';
 
 async function render(req, res) {
   const activeRoute = routes.find((route) => matchPath(req.path, route));

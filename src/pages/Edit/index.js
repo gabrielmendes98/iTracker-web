@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { FormControl, Card, CardHeader, CardContent, Grid, Select, TextField, Button, Drawer } from '@material-ui/core';
-import { ArrowForwardIosIcon, ArrowBackIosIcon } from '@material-ui/icons';
+import { ArrowForwardIos, ArrowBackIos } from '@material-ui/icons';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Alert from '@material-ui/lab/Alert';
 
@@ -303,7 +303,7 @@ class IssueEdit extends React.Component {
 
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px', width: '90%' }}>
           <Button
-            startIcon={<ArrowBackIosIcon />}
+            startIcon={<ArrowBackIos />}
             variant="contained"
             type="submit"
             style={{ backgroundColor: 'orangered', color: '#fff' }}
@@ -313,7 +313,7 @@ class IssueEdit extends React.Component {
             Prev
           </Button>
           <Button
-            endIcon={<ArrowForwardIosIcon />}
+            endIcon={<ArrowForwardIos />}
             variant="contained"
             type="submit"
             style={{ backgroundColor: 'orangered', color: '#fff' }}

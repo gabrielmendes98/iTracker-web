@@ -1,7 +1,7 @@
 import Issues from '../pages/Issues';
 import Report from '../pages/Report';
-import Edit from '../components/IssueEdit';
-import About from '../components/About';
+import Edit from '../pages/Edit';
+import About from '../pages/About';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 

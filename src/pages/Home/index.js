@@ -1,4 +1,7 @@
 import React from 'react';
+
+import TimeDoodle from '../../assets/time_doodle.svg';
+
 import './styles.css';
 
 export default function Home() {
@@ -6,6 +9,7 @@ export default function Home() {
     <>
       <div className="bg">
         <h1>iTracker</h1>
+        <img src={TimeDoodle} alt="time doodle" />
       </div>
       <div className="explanation">
         <p style={{ margin: '20px 0' }}>

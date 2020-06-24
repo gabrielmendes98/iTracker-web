@@ -1,4 +1,5 @@
 node_modules
-public/*
+src/public/*
+!src/public/.gitkeep
 .env
 dist

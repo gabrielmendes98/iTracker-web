@@ -6,8 +6,8 @@ import './styles.css';
 
 export default function Home() {
   return (
-    <>
-      <div className="bg">
+    <div id="home-page">
+      <div className="logo-doodle">
         <h1>iTracker</h1>
         <img src={TimeDoodle} alt="time doodle" />
       </div>
@@ -27,6 +27,6 @@ export default function Home() {
           log in with Google account. To add an issue, just click the &quot;+&quot; button on the navigation bar.
         </p>
       </div>
-    </>
+    </div>
   );
 }

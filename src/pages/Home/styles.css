@@ -28,9 +28,9 @@
   font-size: 18px;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 430px) {
   .logo-doodle h1 {
-    font-size: 60px;
+    display: none;
   }
 }
 

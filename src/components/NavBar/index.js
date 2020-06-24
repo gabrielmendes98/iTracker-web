@@ -110,7 +110,7 @@ class NavBar extends Component {
             <div className="line3" />
           </div>
           <div id="left">
-            <div className="logo">Issue Tracker</div>
+            <h1>iTracker</h1>
             <div className="search">
               <Search />
             </div>

@@ -7,10 +7,8 @@ header nav {
   background-color: #3f51b5;
 }
 
-.logo {
+h1 {
   color: #fff;
-  letter-spacing: 2px;
-  font-size: 20px;
   margin: 0 20px;
 }
 
@@ -132,7 +130,7 @@ header nav div ul li a:hover {
   #right {
     padding-left: 0;
   }
-  .logo {
+  h1 {
     padding-left: 40px;
   }
 }
@@ -167,7 +165,7 @@ header nav div ul li a:hover {
 }
 
 @media screen and (max-width: 430px) {
-  .logo {
+  h1 {
     display: none;
   }
 }

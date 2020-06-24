@@ -140,7 +140,13 @@ class SignInNavItem extends Component {
         <Dialog onClose={this.hideModal} open={modalOpen}>
           <DialogTitle onClose={this.hideModal}>Sign in</DialogTitle>
           <DialogContent dividers>
-            <img src={btnGoogle} style={{ width: 'auto', height: 60 }} onClick={this.signIn} alt="Login with Google" />
+            <img
+              id="sign-in-button"
+              src={btnGoogle}
+              style={{ width: 'auto', height: 60 }}
+              onClick={this.signIn}
+              alt="Login with Google"
+            />
           </DialogContent>
           <DialogActions>
             <p style={{ color: 'blue', cursor: 'pointer' }} onClick={this.hideModal}>

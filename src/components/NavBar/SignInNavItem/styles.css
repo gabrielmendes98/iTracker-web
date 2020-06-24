@@ -13,6 +13,10 @@
   border: none;
 }
 
+#sign-in-button {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 1035px) {
   .MuiButtonBase-root.username-button {
     display: none;

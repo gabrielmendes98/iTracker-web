@@ -26,7 +26,7 @@ if (enableHMR && process.env.NODE_ENV !== 'production') {
   app.use(hotMiddleware(compiler));
 }
 
-app.use(express.static('public'));
+app.use(express.static('dist'));
 
 const port = process.env.PORT || 8000;
 

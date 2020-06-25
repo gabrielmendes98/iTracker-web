@@ -8,18 +8,10 @@
     "npm": "6.x"
   },
   "scripts": {
-    "#start": "UI server. HMR is enabled in dev mode.",
     "start": "node dist/server.js",
-    "#lint": "Runs ESLint on all relevant files",
     "lint": "eslint server src browser --ext js,jsx",
-    "#build": "Generates JS bundles for production. Use with start.",
     "build": "webpack --mode production",
-    "#watch-server-hmr": "Recompile server HMR bundle on changes.",
-    "watch-server-hmr": "webpack -w --config webpack.serverHMR.js",
-    "#dev-all": "Dev mode: watch for server changes and start UI server. Works on Linux and Mac",
-    "dev-all": "rm dist/* && npm run watch-server-hmr & sleep 5 && npm start",
-    "publishheroku": "cd ../ && git subtree push --prefix ui heroku-ui master || true",
-    "heroku-postbuild": "webpack --mode production"
+    "watch-server-hmr": "webpack -w --config webpack.serverHMR.js"
   },
   "repository": {
     "type": "git",

@@ -174,3 +174,8 @@ header nav div ul li a:hover {
 .issue-add-navitem {
   color: white;
 }
+
+header nav div#left h1 a {
+  text-decoration: none;
+  color: #fff;
+}
